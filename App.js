@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import MainContainer from "./src/components/MainContainer";
+import MainContainer from "./src/containers/MainContainer";
 import "./styles.css";
 
 const App = () => {

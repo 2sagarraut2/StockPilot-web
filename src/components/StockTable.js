@@ -1,8 +1,13 @@
 import { Button, Form, Input, Modal, Table, Tag } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  EditOutlined,
+  WarningOutlined,
+} from "@ant-design/icons";
 import { useState } from "react";
 
-const StockTable = ({ stock, loading }) => {
+const StockTable = ({ stock, total, loading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [form] = Form.useForm();
@@ -21,7 +26,7 @@ const StockTable = ({ stock, loading }) => {
       title: "SKU",
       render: (record) => (
         <div>
-          <Tag style={{ border: "none" }} className="border-none">
+          <Tag className="rounded-xl p-2 border border-gray-200 font-medium">
             {record.product.sku}
           </Tag>
         </div>
@@ -32,7 +37,7 @@ const StockTable = ({ stock, loading }) => {
       key: "category",
       render: (record) => (
         <div>
-          <Tag className="rounded-xl p-2 border border-gray-200 font-medium">
+          <Tag style={{ border: "none" }} color="#222">
             {record.product.category.name}
           </Tag>
         </div>
@@ -78,22 +83,27 @@ const StockTable = ({ stock, loading }) => {
   const getStockStatus = (quantity) => {
     let color;
     let label;
+    let icon;
 
     if (quantity === 0) {
-      color = "red";
+      color = "#FF0000";
       label = "Out of Stock";
+      icon = <CloseCircleOutlined />;
     } else if (quantity < 10) {
-      color = "orange";
+      color = "#FFA500";
       label = "Low Stock";
+      icon = <WarningOutlined />;
     } else {
-      color = "green";
+      color = "#008000";
       label = "In Stock";
+      icon = <CheckCircleOutlined />;
     }
 
     return (
       <Tag
         color={color}
         className="px-3 py-1 rounded-full text-sm font-semibold shadow-md"
+        icon={icon}
       >
         {label}
       </Tag>
@@ -125,7 +135,7 @@ const StockTable = ({ stock, loading }) => {
         dataSource={stock}
         columns={columns}
         rowKey="_id"
-        title={() => <h2 className="text-lg font-bold">Product Stocks</h2>}
+        title={() => <h2 className="text-lg font-bold">Products</h2>}
         size="small"
         loading={loading}
       />
