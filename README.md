@@ -66,29 +66,20 @@ StockPilot-web/
 
 2. **Install dependencies**
 
-   ```npm install
-
-   ```
+   `npm install`
 
 3. **Set environment variables**
 
    Create a .env file in the project root:
-
-   ```REACT_APP_API_URL=http://localhost:5555
-
-   ```
+   `REACT_APP_API_URL=http://localhost:5555`
 
 4. **Run the development server**
 
-   ```npm start
-
-   ```
+   `npm start`
 
 5. **Build for production**
 
-   ```npm run build
-
-   ```
+   `npm run build`
 
 ## 👨‍💻 Author
 

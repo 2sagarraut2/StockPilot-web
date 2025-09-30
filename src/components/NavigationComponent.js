@@ -1,5 +1,4 @@
 import { Menu } from "antd";
-import React from "react";
 import { Link } from "react-router-dom";
 import {
   DashboardOutlined,
@@ -28,7 +27,7 @@ const NavigationComponent = () => {
 
   return (
     <div className="w-full px-2 flex flex-col">
-      <Menu mode="vertical" items={linksObj} style={{ background: "none" }} />
+      <Menu mode="vertical" items={linksObj} style={{ border: "none" }} />
     </div>
   );
 };

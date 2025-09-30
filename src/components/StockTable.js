@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, Table, Tag } from "antd";
+import { Button, Form, Input, Modal, Table, Tag, Typography } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,

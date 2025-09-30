@@ -4,8 +4,7 @@ import {
   EllipsisOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Flex } from "antd";
-import { useState } from "react";
+import { Card, Flex } from "antd";
 
 const CategoryCards = ({ category, loading }) => {
   const actions = [
@@ -14,14 +13,17 @@ const CategoryCards = ({ category, loading }) => {
   ];
 
   return (
-    <div className="p-8">
+    <div className="">
       <Flex gap="middle" align="start" vertical>
         {category &&
           category.map((category) => (
             <Card
               loading={loading}
               actions={actions}
-              style={{ minWidth: 300, borderTop: "3px solid #1890ff" }}
+              style={{
+                minWidth: 400,
+                borderTop: "3px solid #1890ff",
+              }}
               key={category._id}
             >
               <Card.Meta

@@ -8,3 +8,9 @@ export const stockData = async () => {
 
   return await axios.get(url, { withCredentials: true });
 };
+
+export const categoryData = async () => {
+  let url = `${enviroments.dataURL}/category?limit=2&skip=1`;
+
+  return await axios.get(url, { withCredentials: true });
+};
