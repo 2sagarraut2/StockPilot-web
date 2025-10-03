@@ -7,7 +7,6 @@ import {
 import { Card, Col, Flex } from "antd";
 
 const CategoryCards = ({ category, loading }) => {
-  console.log(category);
   const actions = [
     <EditOutlined key="edit" className="hover:cursor-pointer" />,
     <DeleteOutlined key="delete" className="hover:cursor-pointer" />,

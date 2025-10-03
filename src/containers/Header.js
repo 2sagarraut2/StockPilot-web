@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import NavigationComponent from "../components/NavigationComponent";
 import LogoComponent from "../components/LogoComponent";
-import Title from "../components/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setStock } from "../utils/redux/stockSlice";
 import { categoryData, stockData } from "../api/stockDetails";
@@ -39,10 +37,6 @@ const Header = () => {
   useEffect(() => {
     getStocks();
   }, []);
-
-  // Define the width class once
-  const sidebarWidthClass = "w-[220px] min-w-[200px]";
-  const buttonOpenLeft = "left-[236px]"; // 220px + 16px (left-4) = 236px
 
   const getCategories = async () => {
     try {

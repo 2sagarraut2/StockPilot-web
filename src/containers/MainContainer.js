@@ -3,7 +3,8 @@ import Header from "./Header";
 import Error from "../components/Error";
 import Dashboard from "./Dashboard";
 import { Provider } from "react-redux";
-import appStore from "../utils/redux/appStore";
+import { PersistGate } from "redux-persist/integration/react";
+import appStore, { persistor } from "../utils/redux/appStore";
 import Title from "../components/Title";
 import { lazy, Suspense, useEffect } from "react";
 import Login from "../containers/Login";
@@ -68,7 +69,9 @@ const appRouter = createBrowserRouter([
 const MainContainer = () => {
   return (
     <Provider store={appStore}>
-      <RouterProvider router={appRouter} />
+      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+        <RouterProvider router={appRouter} />
+      </PersistGate>
     </Provider>
   );
 };

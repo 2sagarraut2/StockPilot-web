@@ -33,3 +33,11 @@ export const userLogout = async () => {
 
   return res;
 };
+
+export const profileData = async () => {
+  let url = `${enviroments.dataURL}/profile/view`;
+
+  const res = await axios.get(url, { withCredentials: true });
+
+  return res;
+};

@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   DashboardOutlined,
   ProductOutlined,
@@ -7,19 +7,22 @@ import {
 } from "@ant-design/icons";
 
 const NavigationComponent = () => {
+  const location = useLocation();
+  const path = location.pathname;
+
   const linksObj = [
     {
-      key: "Dashboard",
+      key: "/",
       label: <Link to="/">Dashboard</Link>,
       icon: <DashboardOutlined style={{ fontSize: "18px" }} />,
     },
     {
-      key: "Products",
+      key: "/products",
       label: <Link to="/products">Products</Link>,
       icon: <ProductOutlined style={{ fontSize: "18px" }} />,
     },
     {
-      key: "Categories",
+      key: "/categories",
       label: <Link to="/categories">Categories</Link>,
       icon: <TagsOutlined style={{ fontSize: "18px" }} />,
     },
@@ -30,6 +33,7 @@ const NavigationComponent = () => {
       <Menu
         mode="vertical"
         items={linksObj}
+        selectedKeys={[path]}
         style={{ border: "none", fontSize: "14px", fontWeight: "500" }}
       />
     </div>

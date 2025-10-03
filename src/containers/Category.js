@@ -10,7 +10,6 @@ import {
 
 const Category = () => {
   const { items, loading } = useSelector((store) => store.category);
-  console.log(items);
 
   return (
     <div className="p-6 ">

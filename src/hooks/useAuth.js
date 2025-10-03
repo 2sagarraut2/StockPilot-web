@@ -15,7 +15,6 @@ export const useAuth = () => {
       setLoading(true);
       const res = await authService.login({ email, password });
       if (res.status === 200) {
-        // Save token to localStorage/sessionStorage if needed
         dispatch(setUser(res.data.data));
 
         showMessage({
@@ -45,9 +44,20 @@ export const useAuth = () => {
     try {
       setLoading(true);
       const res = await authService.signup(data);
-      console.log("Signed up:", res);
+
+      if (res.status === 200) {
+        showMessage({
+          type: "success",
+          text: res?.data?.message,
+        });
+        console.log("Signed up:", res);
+      }
     } catch (err) {
-      console.error("Signup failed:", err);
+      console.log("Signup failed:", err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
     } finally {
       setLoading(false);
     }
