@@ -1,85 +1,35 @@
-import { Col, Row } from "antd";
-import CategoryCards from "../components/CategoryCards";
-import { useEffect, useState } from "react";
-import DataCard from "../components/DataCard";
-import { AppstoreOutlined } from "@ant-design/icons";
+import { Row } from "antd";
+import CategoryCards from "../components/common/CategoryCards";
 import { useSelector } from "react-redux";
+import CustomHeading from "../components/common/CustomHeading";
+import {
+  CATEGORY_MANAGEMENT_BUTTON,
+  CATEGORY_MANAGEMENT_TAGLINE,
+  CATEGORY_MANAGEMENT_TITLE,
+} from "../utils/constants";
 
 const Category = () => {
-  // const [categoryData, setCategoryData] = useState(null);
-
-  const totalProducts = useSelector((store) => store.stock.total);
-  const productLoading = useSelector((store) => store.stock.loading);
-  const { items, loading, total } = useSelector((store) => store.category);
-  // const totalCategories = useSelector((store) => store.category.total);
-  // const categoryLoading = useSelector((store) => store.category.loading);
-  // const categoryData = useSelector((store) => store.category.items);
+  const { items, loading } = useSelector((store) => store.category);
+  console.log(items);
 
   return (
-    <div className="p-6">
-      <Row gutter={16} style={{ marginBottom: "4%" }}>
-        <Col span={8}>
-          <DataCard
-            title="Total Categories"
-            quantity={total}
-            description="Active categories in system"
-            loading={loading}
-            icon={
-              <AppstoreOutlined
-                style={{
-                  fontSize: "xx-large",
-                  backgroundColor: "#dbeafe",
-                  borderRadius: "4px",
-                  padding: "4px",
-                  color: "#155dfc",
-                }}
-              />
-            }
-          />
-        </Col>
-        <Col span={8}>
-          <DataCard
-            title="Total Products"
-            quantity={totalProducts}
-            description="Products across all categories"
-            loading={productLoading}
-            icon={
-              <AppstoreOutlined
-                style={{
-                  fontSize: "xx-large",
-                  backgroundColor: "#dbeafe",
-                  borderRadius: "4px",
-                  padding: "4px",
-                  color: "#155dfc",
-                }}
-              />
-            }
-          />
-        </Col>
-        <Col span={8}>
-          <DataCard
-            title="Average per Category"
-            quantity={totalProducts / total || 0}
-            description="Products per category"
-            loading={productLoading && loading}
-            icon={
-              <AppstoreOutlined
-                style={{
-                  fontSize: "xx-large",
-                  backgroundColor: "#dbeafe",
-                  borderRadius: "4px",
-                  padding: "4px",
-                  color: "#155dfc",
-                }}
-              />
-            }
-          />
-        </Col>
-      </Row>
+    <div className="p-6 ">
+      <CustomHeading
+        title={CATEGORY_MANAGEMENT_TITLE}
+        tagLine={CATEGORY_MANAGEMENT_TAGLINE}
+        buttonText={CATEGORY_MANAGEMENT_BUTTON}
+      />
       <Row gutter={16}>
-        <Col span={8}>
-          <CategoryCards category={items} loading={loading} />
-        </Col>
+        {items &&
+          items.map((category) => {
+            return (
+              <CategoryCards
+                category={category}
+                loading={loading}
+                key={category._id}
+              />
+            );
+          })}
       </Row>
     </div>
   );

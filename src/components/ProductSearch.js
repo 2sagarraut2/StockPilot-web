@@ -1,10 +1,21 @@
 import { Input, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { searchProductData } from "../api/stockDetails";
+import {
+  setStock,
+  filterStocks,
+  resetFilter,
+  setLoading,
+} from "../utils/redux/stockSlice";
+import { useEffect, useState } from "react";
 
 const ProductSearch = () => {
+  const [searchText, setSearchText] = useState("");
+
   const categoryValues = useSelector((store) => store.category.items);
-  console.log(categoryValues);
+  const dispatch = useDispatch();
+  const originalStocks = useSelector((store) => store.stock);
 
   const options = categoryValues.map((item) => ({
     value: item._id,
@@ -14,13 +25,53 @@ const ProductSearch = () => {
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   };
+
+  useEffect(() => {
+    const delayBounce = setTimeout(() => {
+      if (searchText.trim().length > 0) {
+        getSearchresults(searchText);
+      }
+    }, 3000);
+
+    return () => clearTimeout(delayBounce);
+  }, [searchText]);
+
+  const getSearchresults = async (query) => {
+    dispatch(setLoading(true));
+    try {
+      const res = await searchProductData(searchText);
+
+      if (res.status === 200) {
+        const { message, data, total } = res.data;
+
+        if (Array.isArray(data)) {
+          // create a separate reducer for searchData
+          dispatch(filterStocks({ items: data, total }));
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(setLoading(false));
+    }
+  };
+
+  const handlSearchClear = () => {
+    dispatch(resetFilter());
+  };
+
   return (
-    <div className="flex p-6 border border-gray-300 mb-3 rounded-lg justify-between gap-4">
+    <div className="flex p-6 border border-gray-300 mb-3 rounded-lg justify-between gap-4 bg-white">
       <div className="flex-1">
         <Input
           variant="filled"
           placeholder="Search products by name or SKU..."
           prefix={<SearchOutlined />}
+          value={searchText}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+          }}
+          allowClear="true"
+          onClear={handlSearchClear}
         />
       </div>
       <div>

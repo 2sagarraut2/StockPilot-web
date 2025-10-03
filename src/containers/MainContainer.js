@@ -1,23 +1,25 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import Product from "./Product";
 import Header from "./Header";
 import Error from "../components/Error";
-import CategoryTable from "./Category";
-import StockAlerts from "../components/StockAlerts";
 import Dashboard from "./Dashboard";
 import { Provider } from "react-redux";
 import appStore from "../utils/redux/appStore";
 import Title from "../components/Title";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setStock } from "../utils/redux/stockSlice";
+import { lazy, Suspense, useEffect } from "react";
+import Login from "../containers/Login";
+import ProtectedRoute from "../components/ProtectedRoute";
+const ProductComponent = lazy(() => import("./Product"));
+const CategoryComponent = lazy(() => import("./Category"));
+import { LoadingOutlined } from "@ant-design/icons";
 
 const AppLayout = () => {
   return (
-    <div className="flex">
-      <Header />
+    <div className="flex flex-col md:flex-row h-screen">
+      <div className="md:w-55 md:flex-shrink-0 hidden md:block ">
+        <Header />
+      </div>
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto bg-gray-50">
         <Title />
         <Outlet />
       </div>
@@ -27,17 +29,37 @@ const AppLayout = () => {
 
 const appRouter = createBrowserRouter([
   {
+    path: "/login",
+    element: <Login />, // login remains public
+  },
+  {
     path: "/",
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
         element: <Dashboard />,
       },
-      { path: "/products", element: <Product /> },
-      { path: "/categories", element: <CategoryTable /> },
-      { path: "/stock-alerts", element: <StockAlerts /> },
-
+      {
+        path: "/products",
+        element: (
+          <Suspense fallback={<LoadingOutlined />}>
+            <ProductComponent />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/categories",
+        element: (
+          <Suspense fallback={<LoadingOutlined />}>
+            <CategoryComponent />
+          </Suspense>
+        ),
+      },
       { path: "*", element: <Error /> },
     ],
   },

@@ -9,6 +9,14 @@ export const stockData = async () => {
   return await axios.get(url, { withCredentials: true });
 };
 
+// search stocks
+export const searchProductData = async (query) => {
+  let url = `${enviroments.dataURL}/stock/search?query=${query}`;
+
+  return await axios.get(url, { withCredentials: true });
+};
+
+// get all categories
 export const categoryData = async () => {
   let url = `${enviroments.dataURL}/category?limit=2&skip=1`;
 
