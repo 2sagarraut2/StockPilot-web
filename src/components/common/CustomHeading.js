@@ -2,8 +2,10 @@ import { Button } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import { PlusOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 const CustomHeading = ({ title, tagLine, buttonText }) => {
+  const userRole = useSelector((store) => store.user.user.role.label);
   return (
     <section className="flex justify-between">
       {title && (
@@ -20,7 +22,7 @@ const CustomHeading = ({ title, tagLine, buttonText }) => {
           )}
         </div>
       )}
-      {buttonText && (
+      {userRole === "admin" && buttonText && (
         <div className="flex flex-col justify-center">
           <Button color="default" variant="solid" icon={<PlusOutlined />}>
             {buttonText}

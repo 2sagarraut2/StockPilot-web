@@ -48,21 +48,17 @@ const Title = () => {
   return (
     <div className="flex justify-between items-baseline px-8 py-6 border-b border-[#ddd] shadow-sm bg-white">
       <Paragraph style={{ margin: 0 }}>{WELCOME_NOTE}</Paragraph>
-      {/* <Button type="text">
-        <Avatar icon={<UserOutlined />} size="small" />
-        {user.firstName} {user.lastName}
-        <CaretDownOutlined />
-      </Button> */}
-
-      <div>
-        <Popover placement="bottomRight" content={content}>
-          <Button type="text" loading={loading}>
-            <Avatar icon={<UserOutlined />} size="small" />
-            {user.firstName} {user.lastName}
-            <CaretDownOutlined />
-          </Button>
-        </Popover>
-      </div>
+      {user && (
+        <div>
+          <Popover placement="bottomRight" content={content}>
+            <Button type="text" loading={loading}>
+              <Avatar icon={<UserOutlined />} size="small" />
+              {user.firstName} {user.lastName}
+              <CaretDownOutlined />
+            </Button>
+          </Popover>
+        </div>
+      )}
     </div>
   );
 };

@@ -46,11 +46,12 @@ export const useAuth = () => {
       const res = await authService.signup(data);
 
       if (res.status === 200) {
+        dispatch(setUser(res.data.data));
         showMessage({
           type: "success",
           text: res?.data?.message,
         });
-        console.log("Signed up:", res);
+        return navigate("/", { replace: true });
       }
     } catch (err) {
       console.log("Signup failed:", err);

@@ -3,7 +3,6 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { searchProductData } from "../api/stockDetails";
 import {
-  setStock,
   filterStocks,
   resetFilter,
   setLoading,

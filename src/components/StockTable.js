@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, Table, Tag, Typography } from "antd";
+import { Button, Form, Input, Modal, Table, Tag } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -130,43 +130,47 @@ const StockTable = ({ stock, total, loading }) => {
   };
 
   return (
-    <div>
-      <Table
-        dataSource={stock}
-        columns={columns}
-        rowKey="_id"
-        title={() => <h2 className="text-lg font-bold">Products</h2>}
-        size="small"
-        loading={loading}
-      />
+    <>
+      {stock && (
+        <div>
+          <Table
+            dataSource={stock}
+            columns={columns}
+            rowKey="_id"
+            title={() => <h2 className="text-lg font-bold">Products</h2>}
+            size="small"
+            loading={loading}
+          />
 
-      <Modal
-        title="Edit Product"
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText="Update Product"
-        cancelText="Cancel"
-      >
-        <Form form={form} layout="vertical" variant="filled">
-          <Form.Item name="name" label="Name" required>
-            <Input />
-          </Form.Item>
-          <Form.Item name="description" label="Description" required>
-            <Input />
-          </Form.Item>
-          <Form.Item name="category" label="Category" required>
-            <Input />
-          </Form.Item>
-          <Form.Item name="price" label="Price (₹)" required>
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item name="sku" label="SKU" required>
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
-    </div>
+          <Modal
+            title="Edit Product"
+            open={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            okText="Update Product"
+            cancelText="Cancel"
+          >
+            <Form form={form} layout="vertical" variant="filled">
+              <Form.Item name="name" label="Name" required>
+                <Input />
+              </Form.Item>
+              <Form.Item name="description" label="Description" required>
+                <Input />
+              </Form.Item>
+              <Form.Item name="category" label="Category" required>
+                <Input />
+              </Form.Item>
+              <Form.Item name="price" label="Price (₹)" required>
+                <Input type="number" />
+              </Form.Item>
+              <Form.Item name="sku" label="SKU" required>
+                <Input />
+              </Form.Item>
+            </Form>
+          </Modal>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -3,7 +3,6 @@ import InputField from "./InputField";
 import PasswordField from "./PasswordField";
 import { useAuth } from "../../hooks/useAuth";
 import { Button, Divider } from "antd";
-import { useState } from "react";
 
 export default function AuthForm({ mode = "login" }) {
   const {

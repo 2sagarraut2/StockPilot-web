@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import NavigationComponent from "../components/NavigationComponent";
 import LogoComponent from "../components/LogoComponent";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLoading, setStock } from "../utils/redux/stockSlice";
 import { categoryData, stockData } from "../api/stockDetails";
 import { setCategory } from "../utils/redux/categorySlice";
