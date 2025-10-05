@@ -3,8 +3,9 @@ import enviroments from "../enviroment";
 import axios from "axios";
 
 // get all stock
-export const stockData = async () => {
-  let url = `${enviroments.dataURL}/stock?limit=10&skip=0`;
+export const stockData = async (page, limit) => {
+  console.log("hook", page, limit);
+  let url = `${enviroments.dataURL}/stock?page=${page}&limit=${limit}`;
 
   return await axios.get(url, { withCredentials: true });
 };
@@ -17,8 +18,17 @@ export const searchProductData = async (query) => {
 };
 
 // get all categories
-export const categoryData = async () => {
-  let url = `${enviroments.dataURL}/category?limit=2&skip=1`;
+export const categoryData = async (page, limit) => {
+  let url = `${enviroments.dataURL}/category?page=${page}&limit=${limit}`;
 
   return await axios.get(url, { withCredentials: true });
 };
+
+// add Product
+export const addProduct = async (data) => {
+  let url = `${enviroments.dataURL}/product/add`;
+
+  return await axios.post(url, data, { withCredentials: true });
+};
+
+// add category

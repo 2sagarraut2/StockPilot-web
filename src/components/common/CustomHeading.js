@@ -4,8 +4,20 @@ import Title from "antd/es/typography/Title";
 import { PlusOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
-const CustomHeading = ({ title, tagLine, buttonText }) => {
+const CustomHeading = ({ title, tagLine, buttonText, addNewProduct }) => {
   const userRole = useSelector((store) => store.user.user.role.label);
+
+  const handleButtonClick = () => {
+    const data = {
+      name: "iPhone 21 Pro Max",
+      description: "iPhone 20 Pro Max",
+      categoryId: "68d35ef66f20d335accbfd73",
+      price: "99000",
+      sku: "IPHONE-21 Pro Max",
+    };
+    addNewProduct(data);
+  };
+
   return (
     <section className="flex justify-between">
       {title && (
@@ -24,7 +36,12 @@ const CustomHeading = ({ title, tagLine, buttonText }) => {
       )}
       {userRole === "admin" && buttonText && (
         <div className="flex flex-col justify-center">
-          <Button color="default" variant="solid" icon={<PlusOutlined />}>
+          <Button
+            color="default"
+            variant="solid"
+            icon={<PlusOutlined />}
+            onClick={handleButtonClick}
+          >
             {buttonText}
           </Button>
         </div>

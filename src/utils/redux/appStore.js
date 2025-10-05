@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import stockReducer from "./stockSlice";
 import categoryReducer from "./categorySlice";
 import userReducer from "./userSlice";
+import productReducer from "./productSlice";
 
 // 1. Configure persist settings
 const persistConfig = {
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   stock: stockReducer,
   category: categoryReducer,
   user: userReducer,
+  product: productReducer,
 });
 
 // 3. Wrap with persistReducer

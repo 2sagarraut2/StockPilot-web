@@ -5,12 +5,60 @@ import {
   EditOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import useStock from "../utils/useStock";
+import { Grid } from "antd";
+const { useBreakpoint } = Grid;
 
 const StockTable = ({ stock, total, loading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+  });
+
+  const screens = useBreakpoint();
+  const isWebDevice = screens.md;
+
+  const deviceCols = [
+    {
+      title: "Product details",
+      dataIndex: "product name",
+      align: "left",
+      render: (value, row, index) => {
+        const name = row.product.name;
+        const sku = row.product.sku;
+
+        return (
+          <div>
+            <div className="small-table-div">
+              <span>
+                <h5 className="small-table-label">Product Name</h5>
+                <h5>{name}</h5>
+              </span>
+              <span>
+                <h5 className="small-table-label">SKU</h5>
+                <h5>{name}</h5>
+              </span>
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const { getStocksfromCustomHook } = useStock();
+
+  const dispatch = useDispatch();
 
   const [form] = Form.useForm();
+
+  const handleTableChange = (pag) => {
+    setPagination(pag); // Update current page and pageSize
+    // fetchData(pag.current, pag.pageSize);
+    getStocksfromCustomHook(pag.current, pag.pageSize);
+  };
 
   const columns = [
     {
@@ -135,11 +183,18 @@ const StockTable = ({ stock, total, loading }) => {
         <div>
           <Table
             dataSource={stock}
-            columns={columns}
+            columns={isWebDevice ? columns : deviceCols}
             rowKey="_id"
             title={() => <h2 className="text-lg font-bold">Products</h2>}
             size="small"
             loading={loading}
+            pagination={{
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+              total: total,
+            }}
+            onChange={handleTableChange}
+            scroll={{ y: 300 }}
           />
 
           <Modal
@@ -152,19 +207,19 @@ const StockTable = ({ stock, total, loading }) => {
           >
             <Form form={form} layout="vertical" variant="filled">
               <Form.Item name="name" label="Name" required>
-                <Input />
+                <Input size="large" />
               </Form.Item>
               <Form.Item name="description" label="Description" required>
-                <Input />
+                <Input size="large" />
               </Form.Item>
               <Form.Item name="category" label="Category" required>
-                <Input />
+                <Input size="large" />
               </Form.Item>
               <Form.Item name="price" label="Price (₹)" required>
                 <Input type="number" />
               </Form.Item>
               <Form.Item name="sku" label="SKU" required>
-                <Input />
+                <Input size="large" />
               </Form.Item>
             </Form>
           </Modal>

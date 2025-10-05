@@ -6,11 +6,7 @@ const InputField = React.forwardRef(({ label, error, ...props }, ref) => (
     {label && (
       <label className="mb-1 font-medium text-sm text-gray-700">{label}</label>
     )}
-    <Input
-      ref={ref}
-      className="border rounded-md px-3 py-2 focus:ring-blue-500"
-      {...props}
-    />
+    <Input ref={ref} {...props} size="large" />
     {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
   </div>
 ));

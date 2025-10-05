@@ -1,42 +1,49 @@
 import { useEffect, useState } from "react";
 import NavigationComponent from "../components/NavigationComponent";
 import LogoComponent from "../components/LogoComponent";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setStock } from "../utils/redux/stockSlice";
 import { categoryData, stockData } from "../api/stockDetails";
 import { setCategory } from "../utils/redux/categorySlice";
+import useStock from "../utils/useStock";
+import useCategory from "../utils/useCategory";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const { getStocksfromCustomHook } = useStock();
+  const { getCategoriesFromCustomHook } = useCategory();
+  const products = useSelector((store) => store.product.products);
+
+  useEffect(() => {
+    const limit = 10;
+    const page = 1;
+    getStocksfromCustomHook(page, limit);
+  }, [products]);
 
   const dispatch = useDispatch();
 
-  const getStocks = async () => {
-    dispatch(setLoading(true));
-    try {
-      const res = await stockData();
+  // const getStocks = async () => {
+  //   dispatch(setLoading(true));
+  //   try {
+  //     const res = await stockData();
 
-      if (res.status === 200) {
-        const { message, data, total } = res.data;
+  //     if (res.status === 200) {
+  //       const { message, data, total } = res.data;
 
-        if (Array.isArray(data)) {
-          dispatch(
-            setStock({
-              items: data,
-              total,
-            })
-          );
-        }
-      }
-    } catch (err) {
-      console.log(err);
-      dispatch(setLoading(false));
-    }
-  };
-
-  useEffect(() => {
-    getStocks();
-  }, []);
+  //       if (Array.isArray(data)) {
+  //         dispatch(
+  //           setStock({
+  //             items: data,
+  //             total,
+  //           })
+  //         );
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     dispatch(setLoading(false));
+  //   }
+  // };
 
   const getCategories = async () => {
     try {
@@ -56,7 +63,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    getCategories();
+    const limit = 10;
+    const page = 1;
+    getCategoriesFromCustomHook(page, limit);
   }, []);
 
   return (

@@ -17,9 +17,16 @@ const Login = () => {
   };
 
   return (
-    <div className="p-6 flex justify-center">
-      <div className="space-y-4 p-6 bg-white shadow-md rounded-md w-full max-w-md">
-        <LogoComponent />
+    <div className="px-6 py-24 flex justify-center">
+      <div
+        className="space-y-4 p-6 bg-white shadow-md rounded-md w-full max-w-md"
+        style={{
+          boxShadow: "0 0 6px rgba(0,0,0,0.1), 0 -2px 4px rgba(0,0,0,0.05)",
+        }}
+      >
+        <section className="flex justify-center">
+          <LogoComponent />
+        </section>
         <Flex vertical gap="middle">
           <Radio.Group
             onChange={handleRadioChange}

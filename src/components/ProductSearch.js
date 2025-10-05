@@ -14,12 +14,11 @@ const ProductSearch = () => {
 
   const categoryValues = useSelector((store) => store.category.items);
   const dispatch = useDispatch();
-  const originalStocks = useSelector((store) => store.stock);
 
-  const options = categoryValues.map((item) => ({
-    value: item._id,
-    label: item.name,
-  }));
+  // const options = categoryValues.map((item) => ({
+  //   value: item._id,
+  //   label: item.name,
+  // }));
 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
@@ -66,6 +65,7 @@ const ProductSearch = () => {
           placeholder="Search products by name or SKU..."
           prefix={<SearchOutlined />}
           value={searchText}
+          style={{ fontSize: "16px" }}
           onChange={(e) => {
             setSearchText(e.target.value);
           }}
@@ -79,7 +79,7 @@ const ProductSearch = () => {
           style={{ width: 120 }}
           onChange={handleChange}
           variant="filled"
-          options={options}
+          // options={options}
         />
       </div>
     </div>

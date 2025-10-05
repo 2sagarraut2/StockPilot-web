@@ -9,11 +9,7 @@ const PasswordField = React.forwardRef(({ label, error, ...props }, ref) => {
           {label}
         </label>
       )}
-      <Input.Password
-        ref={ref}
-        className="border rounded-md px-3 py-2 pr-10 focus:ring-2 focus:ring-blue-500"
-        {...props}
-      />
+      <Input.Password ref={ref} {...props} size="large" />
 
       {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
     </div>
