@@ -45,22 +45,22 @@ const Header = () => {
   //   }
   // };
 
-  const getCategories = async () => {
-    try {
-      dispatch(setStock({ loading: true }));
-      const res = await categoryData();
+  // const getCategories = async () => {
+  //   try {
+  //     dispatch(setStock({ loading: true }));
+  //     const res = await categoryData();
 
-      if (res.status === 200) {
-        const { message, data, total } = res.data;
+  //     if (res.status === 200) {
+  //       const { message, data, total } = res.data;
 
-        if (Array.isArray(data)) {
-          dispatch(setCategory({ items: data, total, loading: false }));
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //       if (Array.isArray(data)) {
+  //         dispatch(setCategory({ items: data, total, loading: false }));
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
     const limit = 10;

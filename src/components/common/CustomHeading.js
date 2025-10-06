@@ -4,7 +4,8 @@ import Title from "antd/es/typography/Title";
 import { PlusOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
-const CustomHeading = ({ title, tagLine, buttonText, addNewProduct }) => {
+const CustomHeading = (props) => {
+  const { title, tagLine, buttonText, handleAddButtonClick } = props;
   const userRole = useSelector((store) => store.user.user.role.label);
 
   const handleButtonClick = () => {
@@ -15,7 +16,7 @@ const CustomHeading = ({ title, tagLine, buttonText, addNewProduct }) => {
       price: "99000",
       sku: "IPHONE-21 Pro Max",
     };
-    addNewProduct(data);
+    if (handleAddButtonClick) handleAddButtonClick(data);
   };
 
   return (

@@ -66,7 +66,7 @@ const Dashboard = () => {
         <Col span={8}>
           <DataCard
             title={AVERAGE_PER_CATEGORY}
-            quantity={totalProducts / total || 0}
+            quantity={Math.floor(totalProducts / total) || 0}
             description={PRODUCT_PER_CATEGORY}
             loading={productLoading || loading}
             icon={

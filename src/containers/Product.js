@@ -13,7 +13,7 @@ const Product = () => {
 
   const dispatch = useDispatch();
 
-  const addNewProduct = async (data) => {
+  const handleAddButtonClick = async (data) => {
     try {
       const res = await addProduct(data);
 
@@ -43,7 +43,7 @@ const Product = () => {
         title="Product Management"
         tagLine="Manage your inventory products and stock levels."
         buttonText="Add Product"
-        addNewProduct={addNewProduct}
+        handleAddButtonClick={handleAddButtonClick}
       />
       <section>
         <ProductSearch />

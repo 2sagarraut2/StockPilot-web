@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { setLoading, setStock } from "./redux/stockSlice";
+import { setLoading } from "./redux/categorySlice";
 import { categoryData } from "../api/stockDetails";
-import { setCategory } from "./redux/categorySlice";
+import { addCategoryPage, setCategory } from "./redux/categorySlice";
 
 const useCategory = () => {
   const dispatch = useDispatch();
@@ -9,14 +9,17 @@ const useCategory = () => {
   const getCategoriesFromCustomHook = async (page, limit) => {
     dispatch(setLoading(true));
     try {
-      dispatch(setStock({ loading: true }));
       const res = await categoryData(page, limit);
 
       if (res.status === 200) {
         const { message, data, total } = res.data;
 
         if (Array.isArray(data)) {
-          dispatch(setCategory({ items: data, total, loading: false }));
+          if (page === 1) {
+            dispatch(setCategory({ items: data, total, loading: false }));
+          } else {
+            dispatch(addCategoryPage({ items: data, total }));
+          }
         }
       }
     } catch (err) {

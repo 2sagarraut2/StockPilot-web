@@ -1,4 +1,4 @@
-import { Row } from "antd";
+import { Button, Flex, Row } from "antd";
 import CategoryCards from "../components/common/CategoryCards";
 import { useSelector } from "react-redux";
 import CustomHeading from "../components/common/CustomHeading";
@@ -7,9 +7,20 @@ import {
   CATEGORY_MANAGEMENT_TAGLINE,
   CATEGORY_MANAGEMENT_TITLE,
 } from "../utils/constants";
+import { useState } from "react";
+import useCategory from "../utils/useCategory";
 
 const Category = () => {
-  const { items, loading } = useSelector((store) => store.category);
+  const { items, loading, total } = useSelector((store) => store.category);
+  const { getCategoriesFromCustomHook } = useCategory();
+
+  const [page, setPage] = useState(1);
+
+  const handleLoadMore = () => {
+    setPage((prev) => prev + 1);
+    const limit = 10;
+    getCategoriesFromCustomHook(page + 1, limit);
+  };
 
   return (
     <div className="p-6 ">
@@ -18,7 +29,7 @@ const Category = () => {
         tagLine={CATEGORY_MANAGEMENT_TAGLINE}
         buttonText={CATEGORY_MANAGEMENT_BUTTON}
       />
-      <Row gutter={16}>
+      <div className="flex flex-wrap ">
         {items &&
           items.map((category) => {
             return (
@@ -29,7 +40,12 @@ const Category = () => {
               />
             );
           })}
-      </Row>
+      </div>
+      {items.length < total && (
+        <Button onClick={handleLoadMore} disabled={loading}>
+          {loading ? "Loading..." : "Load More"}
+        </Button>
+      )}
     </div>
   );
 };

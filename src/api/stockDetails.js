@@ -4,7 +4,6 @@ import axios from "axios";
 
 // get all stock
 export const stockData = async (page, limit) => {
-  console.log("hook", page, limit);
   let url = `${enviroments.dataURL}/stock?page=${page}&limit=${limit}`;
 
   return await axios.get(url, { withCredentials: true });
