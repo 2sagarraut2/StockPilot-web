@@ -58,8 +58,8 @@ const ProductSearch = () => {
   };
 
   return (
-    <div className="flex p-6 border border-gray-300 mb-3 rounded-lg justify-between gap-4 bg-white">
-      <div className="flex-1">
+    <div className="flex p-6 border border-gray-300 mb-3 rounded-lg justify-between gap-4 bg-white flex-wrap">
+      <div className="md:flex-1">
         <Input
           variant="filled"
           placeholder="Search products by name or SKU..."

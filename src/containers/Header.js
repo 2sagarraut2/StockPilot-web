@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setStock } from "../utils/redux/stockSlice";
 import { categoryData, stockData } from "../api/stockDetails";
 import { setCategory } from "../utils/redux/categorySlice";
-import useStock from "../utils/useStock";
-import useCategory from "../utils/useCategory";
+import useStock from "../utils/hooks/useStock";
+import useCategory from "../utils/hooks/useCategory";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(true);

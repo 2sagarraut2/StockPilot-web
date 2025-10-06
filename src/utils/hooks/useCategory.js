@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { setLoading } from "./redux/categorySlice";
-import { categoryData } from "../api/stockDetails";
-import { addCategoryPage, setCategory } from "./redux/categorySlice";
+import { setLoading } from "../redux/categorySlice";
+import { categoryData } from "../../api/stockDetails";
+import { addCategoryPage, setCategory } from "../redux/categorySlice";
 
 const useCategory = () => {
   const dispatch = useDispatch();

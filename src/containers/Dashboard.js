@@ -24,8 +24,8 @@ const Dashboard = () => {
       <section className="mb-4">
         <CustomHeading title={`Welcome ${username},`} />
       </section>
-      <Row gutter={16} style={{ marginBottom: "4%" }}>
-        <Col span={8}>
+      <Row gutter={[16, 16]} style={{ marginBottom: "4%" }}>
+        <Col xs={24} sm={12} md={8}>
           <DataCard
             title={TOTAL_CATEGORIES}
             quantity={total}
@@ -44,7 +44,7 @@ const Dashboard = () => {
             }
           />
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={12} md={8}>
           <DataCard
             title={TOTAL_PRODUCTS}
             quantity={totalProducts}
@@ -63,7 +63,7 @@ const Dashboard = () => {
             }
           />
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={12} md={8}>
           <DataCard
             title={AVERAGE_PER_CATEGORY}
             quantity={Math.floor(totalProducts / total) || 0}

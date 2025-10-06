@@ -96,6 +96,6 @@ Inspired by real-world stock & inventory management challenges.
   - Update Edit Product page
   - Implement Add Category API
   - Implement Edit Category, Delete Category API
-  - Responsiveness for All Pages
   - implment custom hooks for all API calls
   - add pagination in getCategory API
+  - implement getProfile API

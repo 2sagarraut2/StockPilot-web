@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import useStock from "../utils/useStock";
+import useStock from "../utils/hooks/useStock";
 import { Grid } from "antd";
 const { useBreakpoint } = Grid;
 
@@ -19,7 +19,7 @@ const StockTable = ({ stock, total, loading }) => {
   });
 
   const screens = useBreakpoint();
-  const isWebDevice = screens.md;
+  const isWebDevice = screens.xl;
 
   const deviceCols = [
     {
@@ -34,12 +34,16 @@ const StockTable = ({ stock, total, loading }) => {
           <div>
             <div className="small-table-div">
               <span>
-                <h5 className="small-table-label">Product Name</h5>
+                <h5 className="small-table-label font-semibold">
+                  Product Name
+                </h5>
                 <h5>{name}</h5>
               </span>
               <span>
-                <h5 className="small-table-label">SKU</h5>
-                <h5>{name}</h5>
+                <h5 className="small-table-label font-semibold">SKU</h5>
+                <Tag className="rounded-xl p-2 border border-gray-200 font-medium">
+                  {name}
+                </Tag>
               </span>
             </div>
           </div>
@@ -69,6 +73,7 @@ const StockTable = ({ stock, total, loading }) => {
           <div className="text-gray-500">{record.product.description}</div>
         </div>
       ),
+      width: 200,
     },
     {
       title: "SKU",
@@ -79,6 +84,7 @@ const StockTable = ({ stock, total, loading }) => {
           </Tag>
         </div>
       ),
+      width: 200,
     },
     {
       title: "Category",
@@ -90,6 +96,7 @@ const StockTable = ({ stock, total, loading }) => {
           </Tag>
         </div>
       ),
+      width: 200,
     },
     {
       title: "Price",
@@ -99,6 +106,7 @@ const StockTable = ({ stock, total, loading }) => {
           <div className="font-medium">₹{record.product.price}</div>
         </div>
       ),
+      width: 90,
     },
     {
       title: "Quantity",
@@ -108,10 +116,12 @@ const StockTable = ({ stock, total, loading }) => {
           <div className="font-medium text-orange-500">{record.quantity}</div>
         </div>
       ),
+      width: 80,
     },
     {
       title: "Status",
       render: (record) => getStockStatus(record.quantity),
+      width: 120,
     },
     {
       title: "Actions",
@@ -125,6 +135,7 @@ const StockTable = ({ stock, total, loading }) => {
           ></Button>
         </div>
       ),
+      width: 70,
     },
   ];
 
@@ -194,7 +205,7 @@ const StockTable = ({ stock, total, loading }) => {
               total: total,
             }}
             onChange={handleTableChange}
-            scroll={{ y: 300 }}
+            scroll={{ y: 480 }}
           />
 
           <Modal

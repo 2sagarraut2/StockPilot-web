@@ -8,7 +8,7 @@ import {
   CATEGORY_MANAGEMENT_TITLE,
 } from "../utils/constants";
 import { useState } from "react";
-import useCategory from "../utils/useCategory";
+import useCategory from "../utils/hooks/useCategory";
 
 const Category = () => {
   const { items, loading, total } = useSelector((store) => store.category);
@@ -29,18 +29,12 @@ const Category = () => {
         tagLine={CATEGORY_MANAGEMENT_TAGLINE}
         buttonText={CATEGORY_MANAGEMENT_BUTTON}
       />
-      <div className="flex flex-wrap ">
+      <Row gutter={[16, 16]} style={{ marginBottom: "4%" }}>
         {items &&
           items.map((category) => {
-            return (
-              <CategoryCards
-                category={category}
-                loading={loading}
-                key={category._id}
-              />
-            );
+            return <CategoryCards category={category} loading={loading} />;
           })}
-      </div>
+      </Row>
       {items.length < total && (
         <Button onClick={handleLoadMore} disabled={loading}>
           {loading ? "Loading..." : "Load More"}
