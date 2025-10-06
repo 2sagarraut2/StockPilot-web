@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Card, Col } from "antd";
+import { Button, Card, Col, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 
 const CategoryCards = ({ category, loading }) => {
@@ -18,32 +18,40 @@ const CategoryCards = ({ category, loading }) => {
   };
 
   const actions = [
-    <EditOutlined
-      key="edit"
-      className="hover:cursor-pointer"
-      style={isAdmin ? activeStyle : disabledStyle}
-      onClick={(e) => {
-        if (!isAdmin) {
-          e.stopPropagation(); // prevent any parent click
-          return;
-        }
-        // perform edit action here
-        console.log("Edit clicked");
-      }}
-    />,
-    <DeleteOutlined
-      key="delete"
-      className="hover:cursor-pointer"
-      style={isAdmin ? activeStyle : disabledStyle}
-      onClick={(e) => {
-        if (!isAdmin) {
-          e.stopPropagation();
-          return;
-        }
-        // perform delete action here
-        console.log("Delete clicked");
-      }}
-    />,
+    <span>
+      <Tooltip title={isAdmin ? "Edit Category" : "Only admins can edit"}>
+        <EditOutlined
+          key="edit"
+          className="hover:cursor-pointer"
+          style={isAdmin ? activeStyle : disabledStyle}
+          onClick={(e) => {
+            if (!isAdmin) {
+              e.stopPropagation(); // prevent any parent click
+              return;
+            }
+            // perform edit action here
+            console.log("Edit clicked");
+          }}
+        />
+      </Tooltip>
+    </span>,
+    <span>
+      <Tooltip title={isAdmin ? "Delete Category" : "Only admins can delete"}>
+        <DeleteOutlined
+          key="delete"
+          className="hover:cursor-pointer"
+          style={isAdmin ? activeStyle : disabledStyle}
+          onClick={(e) => {
+            if (!isAdmin) {
+              e.stopPropagation();
+              return;
+            }
+            // perform delete action here
+            console.log("Delete clicked");
+          }}
+        />
+      </Tooltip>
+    </span>,
   ];
 
   return (
@@ -52,10 +60,10 @@ const CategoryCards = ({ category, loading }) => {
         <Col
           span={8}
           style={{ marginBottom: "5px" }}
-          key={category._id}
           xs={24}
           sm={12}
           md={8}
+          id={category._id}
         >
           <Card loading={loading} actions={actions}>
             <Card.Meta

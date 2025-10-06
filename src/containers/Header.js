@@ -7,12 +7,22 @@ import { categoryData, stockData } from "../api/stockDetails";
 import { setCategory } from "../utils/redux/categorySlice";
 import useStock from "../utils/hooks/useStock";
 import useCategory from "../utils/hooks/useCategory";
+import useProfile from "../utils/hooks/useProfile";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { getStocksfromCustomHook } = useStock();
   const { getCategoriesFromCustomHook } = useCategory();
   const products = useSelector((store) => store.product.products);
+  const loggedInUser = useSelector((store) => store.user.user);
+
+  const { getUserProfileData } = useProfile();
+
+  useEffect(() => {
+    if (!loggedInUser) {
+      getUserProfileData();
+    }
+  }, []);
 
   useEffect(() => {
     const limit = 10;

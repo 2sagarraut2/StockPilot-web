@@ -1,7 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import InputField from "./InputField";
 import PasswordField from "./PasswordField";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../utils/hooks/useAuth";
 import { Button, Divider } from "antd";
 
 export default function AuthForm({ mode = "login" }) {

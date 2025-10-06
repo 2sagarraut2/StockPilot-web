@@ -1,12 +1,12 @@
-import { Button, Form, Input, Modal, Table, Tag } from "antd";
+import { Button, Form, Input, Modal, Table, Tag, Tooltip } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   EditOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import useStock from "../utils/hooks/useStock";
 import { Grid } from "antd";
 const { useBreakpoint } = Grid;
@@ -17,6 +17,9 @@ const StockTable = ({ stock, total, loading }) => {
     current: 1,
     pageSize: 10,
   });
+
+  const userRole = useSelector((store) => store.user.user.role.label);
+  const isAdmin = userRole === "admin";
 
   const screens = useBreakpoint();
   const isWebDevice = screens.xl;
@@ -126,16 +129,18 @@ const StockTable = ({ stock, total, loading }) => {
     {
       title: "Actions",
       key: "actions",
-      render: (record) => (
-        <div>
-          <Button
-            icon={<EditOutlined />}
-            // type="primary"
-            onClick={() => handleRowEditClick(record)}
-          ></Button>
-        </div>
-      ),
       width: 70,
+      render: (record) => (
+        <span>
+          <Tooltip title={isAdmin ? "Edit Product" : "Only admins can edit"}>
+            <Button
+              disabled={!isAdmin}
+              icon={<EditOutlined />}
+              onClick={() => handleRowEditClick(record)}
+            />
+          </Tooltip>
+        </span>
+      ),
     },
   ];
 

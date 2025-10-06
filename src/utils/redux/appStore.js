@@ -8,44 +8,31 @@ import userReducer from "./userSlice";
 import productReducer from "./productSlice";
 import { useReducer } from "react";
 
-const appStore = configureStore({
-  reducer: {
-    stock: stockReducer,
-    category: categoryReducer,
-    user: userReducer,
-    product: productReducer,
-  },
+// 🔹 1. Create a persist config only for `user`
+const userPersistConfig = {
+  key: "user",
+  storage,
+  whitelist: ["user"], // only persist user data from userSlice
+};
+
+// 🔹 2. Wrap only `userReducer` with persistReducer
+const rootReducer = combineReducers({
+  stock: stockReducer,
+  category: categoryReducer,
+  user: persistReducer(userPersistConfig, userReducer),
+  product: productReducer,
 });
 
+// 🔹 3. Configure store with combined reducers
+const appStore = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // redux-persist uses non-serializable values
+    }),
+});
+
+// 🔹 4. Create persistor
+export const persistor = persistStore(appStore);
+
 export default appStore;
-
-// // 1. Configure persist settings
-// const persistConfig = {
-//   key: "root", // key for localStorage
-//   storage, // storage engine (localStorage here)
-// };
-
-// // 2. Combine reducers (if you have multiple slices)
-// const rootReducer = combineReducers({
-//   stock: stockReducer,
-//   category: categoryReducer,
-//   user: userReducer,
-//   product: productReducer,
-// });
-
-// // 3. Wrap with persistReducer
-// const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-// // 4. Configure store
-// const appStore = configureStore({
-//   reducer: persistedReducer,
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({
-//       serializableCheck: false, // required for redux-persist
-//     }),
-// });
-
-// // 5. Create persistor
-// export const persistor = persistStore(appStore);
-
-// export default appStore;

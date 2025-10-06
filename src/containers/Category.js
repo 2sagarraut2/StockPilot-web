@@ -32,7 +32,13 @@ const Category = () => {
       <Row gutter={[16, 16]} style={{ marginBottom: "4%" }}>
         {items &&
           items.map((category) => {
-            return <CategoryCards category={category} loading={loading} />;
+            return (
+              <CategoryCards
+                category={category}
+                loading={loading}
+                key={category._id}
+              />
+            );
           })}
       </Row>
       {items.length < total && (
