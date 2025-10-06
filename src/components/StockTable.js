@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useStock from "../utils/hooks/useStock";
 import { Grid } from "antd";
+import EditAddProductModal from "./EditAddProductModal";
 const { useBreakpoint } = Grid;
 
 const StockTable = ({ stock, total, loading }) => {
@@ -213,7 +214,7 @@ const StockTable = ({ stock, total, loading }) => {
             scroll={{ y: 480 }}
           />
 
-          <Modal
+          {/* <Modal
             title="Edit Product"
             open={isModalVisible}
             onOk={handleOk}
@@ -238,7 +239,14 @@ const StockTable = ({ stock, total, loading }) => {
                 <Input size="large" />
               </Form.Item>
             </Form>
-          </Modal>
+          </Modal> */}
+
+          <EditAddProductModal
+            isModalVisible={isModalVisible}
+            handleOk={handleOk}
+            handleCancel={handleCancel}
+            form={form}
+          />
         </div>
       )}
     </>

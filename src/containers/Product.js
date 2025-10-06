@@ -5,6 +5,7 @@ import CustomHeading from "../components/common/CustomHeading";
 import { showMessage } from "../components/common/CustomMessage";
 import { insertProduct } from "../utils/redux/productSlice";
 import { addProduct } from "../api/stockDetails";
+import useStock from "../utils/hooks/useStock";
 
 const Product = () => {
   const { displayedStocks, total, loading } = useSelector(
@@ -12,6 +13,7 @@ const Product = () => {
   );
 
   const dispatch = useDispatch();
+  const { getStocksfromCustomHook } = useStock();
 
   const handleAddButtonClick = async (data) => {
     try {
@@ -22,11 +24,9 @@ const Product = () => {
           type: "success",
           text: res?.data?.message,
         });
+        // dispatch(insertProduct(res.data.data));
 
-        // call getAllProducts custom hook
-        console.log("insertProduct called");
-        console.log(res.data);
-        dispatch(insertProduct(res.data.data));
+        getStocksfromCustomHook(1, 10);
       }
     } catch (err) {
       console.log(err);
@@ -43,7 +43,15 @@ const Product = () => {
         title="Product Management"
         tagLine="Manage your inventory products and stock levels."
         buttonText="Add Product"
-        handleAddButtonClick={handleAddButtonClick}
+        onAdd={() =>
+          handleAddButtonClick({
+            name: "iPhone 23 Pro Max",
+            description: "iPhone 23 Pro Max",
+            categoryId: "68d35ef66f20d335accbfd73",
+            price: "99000",
+            sku: "IPHONE-23 Pro Max",
+          })
+        }
       />
       <section>
         <ProductSearch />

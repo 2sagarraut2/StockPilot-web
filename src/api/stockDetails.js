@@ -31,3 +31,8 @@ export const addProduct = async (data) => {
 };
 
 // add category
+export const addCategory = async (data) => {
+  let url = `${enviroments.dataURL}/category/add`;
+
+  return await axios.post(url, data, { withCredentials: true });
+};

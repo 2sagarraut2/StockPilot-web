@@ -13,10 +13,12 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { getStocksfromCustomHook } = useStock();
   const { getCategoriesFromCustomHook } = useCategory();
-  const products = useSelector((store) => store.product.products);
+  // const products = useSelector((store) => store.product.products);
+  // const categories = useSelector((store) => store.category.categories);
   const loggedInUser = useSelector((store) => store.user.user);
 
   const { getUserProfileData } = useProfile();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!loggedInUser) {
@@ -28,9 +30,7 @@ const Header = () => {
     const limit = 10;
     const page = 1;
     getStocksfromCustomHook(page, limit);
-  }, [products]);
-
-  const dispatch = useDispatch();
+  }, []);
 
   // const getStocks = async () => {
   //   dispatch(setLoading(true));
@@ -75,6 +75,7 @@ const Header = () => {
   useEffect(() => {
     const limit = 10;
     const page = 1;
+    console.log("Called from Header");
     getCategoriesFromCustomHook(page, limit);
   }, []);
 
