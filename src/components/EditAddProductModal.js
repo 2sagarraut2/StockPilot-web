@@ -23,7 +23,7 @@ const EditAddProductModal = ({
         <Form.Item name="description" label="Description" required>
           <Input size="large" />
         </Form.Item>
-        <Form.Item name="categoryId" label="Category" required>
+        <Form.Item name="category" label="Category" required>
           <AllCategories />
         </Form.Item>
         <Form.Item name="price" label="Price (₹)" required>

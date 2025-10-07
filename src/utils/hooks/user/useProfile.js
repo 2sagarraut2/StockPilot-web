@@ -13,7 +13,6 @@ const useProfile = () => {
       const res = await profileData();
 
       if (res.status === 200) {
-        console.log(res.data.data);
         dispatch(setUser(res.data.data.data));
 
         return navigate("/", { replace: true });

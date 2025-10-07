@@ -39,7 +39,7 @@ export const updateProduct = async (productId, data) => {
 
 // delete product
 export const deleteProduct = async (productId) => {
-  let url = `${enviroments.dataURL}/product/update/${productId}`;
+  let url = `${enviroments.dataURL}/product/delete/${productId}`;
 
   return await axios.delete(url, { withCredentials: true });
 };

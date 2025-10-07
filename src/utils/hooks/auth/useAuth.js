@@ -30,7 +30,6 @@ export const useAuth = () => {
         });
       }
     } catch (err) {
-      console.log("Eror occurred");
       showMessage({
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",

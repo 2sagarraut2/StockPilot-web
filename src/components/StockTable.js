@@ -13,6 +13,7 @@ import { Grid } from "antd";
 import EditAddProductModal from "./EditAddProductModal";
 import ProductCardData from "./ProductCardData";
 import DeleteProductModal from "./DeleteProductModal";
+import useProduct from "../utils/hooks/product/useProduct";
 const { useBreakpoint } = Grid;
 
 const getStockStatus = (quantity) => {
@@ -49,6 +50,7 @@ const StockTable = ({ stock, total, loading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [confirmLoadingDeleteModal, setConfirmLoadingDelete] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -56,6 +58,7 @@ const StockTable = ({ stock, total, loading }) => {
 
   const userRole = useSelector((store) => store.user.user.role.label);
   const isAdmin = userRole === "admin";
+  const { deleteProductCustomHook } = useProduct();
 
   const screens = useBreakpoint();
   const isWebDevice = screens.xl;
@@ -203,11 +206,12 @@ const StockTable = ({ stock, total, loading }) => {
     form.setFieldsValue({
       name: record?.product?.name,
       description: record?.product.description,
-      categoryId: record?.product?.category?._id,
+      category: record?.product?.category?._id,
       price: record?.product?.price,
       sku: record?.product?.sku,
     });
     setIsModalVisible(true);
+    console.log(form.getFieldsValue());
   };
 
   const handleOk = () => {
@@ -219,24 +223,26 @@ const StockTable = ({ stock, total, loading }) => {
   };
 
   const handleRowDeleteClick = (record) => {
-    console.log(record._id);
+    setProductToDelete(record);
     setOpenDeleteModal(true);
   };
 
   const handleDeleteOk = () => {
     setConfirmLoadingDelete(true);
-
-    setTimeout(() => {
-      setOpenDeleteModal(false);
-      setConfirmLoadingDelete(false);
-    }, 2000);
-
-    // write API call to delete product
+    deleteProductCustomHook(productToDelete?.product?._id);
+    setOpenDeleteModal(false);
+    setConfirmLoadingDelete(false);
+    const current = 1;
+    const limit = 10;
+    getStocksfromCustomHook(current, limit);
+    setPagination((prev) => ({
+      ...prev,
+      current,
+    }));
   };
 
   const handleCancelDeleteModal = () => {
     setOpenDeleteModal(false);
-    form.resetFields();
   };
 
   const getActions = useCallback((record) => {
@@ -319,7 +325,9 @@ const StockTable = ({ stock, total, loading }) => {
             handleDeleteOk={handleDeleteOk}
             confirmLoadingDeleteModal={confirmLoadingDeleteModal}
             handleCancelDeleteModal={handleCancelDeleteModal}
-            modalText="Delete Product"
+            title="Delete Product"
+            modalText="Are you sure want to delete"
+            productName={productToDelete?.product?.name}
           />
         </div>
       )}

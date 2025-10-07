@@ -37,7 +37,6 @@ const useCategory = () => {
 
         if (res.status === 200) {
           const limit = 10;
-          console.log("called from Category");
           showMessage({
             type: "success",
             text: res?.data?.message,

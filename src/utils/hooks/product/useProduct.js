@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { showMessage } from "../../../components/common/CustomMessage";
-import { addProduct } from "../../../api/stockDetails";
+import { addProduct, deleteProduct } from "../../../api/stockDetails";
 
 const useProduct = () => {
   const dispatch = useDispatch();
@@ -40,9 +40,23 @@ const useProduct = () => {
   };
 
   // TODO:  delete products
-  const deleteProductCustomHook = async () => {
+  const deleteProductCustomHook = async (productId) => {
     try {
-    } catch (err) {}
+      const res = await deleteProduct(productId);
+
+      if (res.status === 200) {
+        showMessage({
+          type: "success",
+          text: res?.data?.message,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+    }
   };
 
   return {

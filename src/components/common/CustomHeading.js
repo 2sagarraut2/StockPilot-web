@@ -24,16 +24,13 @@ const CustomHeading = (props) => {
   const [form] = Form.useForm();
 
   const handleOk = () => {
-    console.log("here");
     setIsModalVisible(false);
-    console.log("form", form.getFieldsValue());
     const data = form.getFieldsValue();
 
     if (title === "Category Management") handleAddCategory(data);
 
     if (title === "Product Management") handleAddProductButtonClick(data);
 
-    console.log("clear category");
     form.resetFields();
   };
 
