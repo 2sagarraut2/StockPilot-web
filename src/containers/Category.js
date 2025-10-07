@@ -9,13 +9,10 @@ import {
 } from "../utils/constants";
 import { useState } from "react";
 import useCategory from "../utils/hooks/category/useCategory";
-import { addCategory } from "../api/stockDetails";
-import { showMessage } from "../components/common/CustomMessage";
-import { setLoading } from "../utils/redux/categorySlice";
 
 const Category = () => {
   const { items, loading, total } = useSelector((store) => store.category);
-  const { getCategoriesFromCustomHook } = useCategory();
+  const { getCategoriesFromCustomHook, addCategoryCustomHook } = useCategory();
   const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
@@ -28,28 +25,10 @@ const Category = () => {
   };
 
   const handleAddCategory = async (data) => {
-    setLoading(true);
-    try {
-      const res = await addCategory(data);
-
-      if (res.status === 200) {
-        // dispatch(addCategoryPage({ items: data }));
-        const limit = 10;
-        console.log("called from Category");
-        getCategoriesFromCustomHook(1, limit);
-        setPage(1);
-        showMessage({
-          type: "success",
-          text: res?.data?.message,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      showMessage({
-        type: "error",
-        text: err?.response?.data?.error || "Something went wrong",
-      });
-    }
+    const limit = 10;
+    addCategoryCustomHook(data);
+    setPage(1);
+    getCategoriesFromCustomHook(1, limit);
   };
 
   return (

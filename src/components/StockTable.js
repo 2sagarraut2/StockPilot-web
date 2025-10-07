@@ -6,7 +6,7 @@ import {
   EditOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useStock from "../utils/hooks/stock/useStock";
 import { Grid } from "antd";
@@ -14,6 +14,36 @@ import EditAddProductModal from "./EditAddProductModal";
 import ProductCardData from "./ProductCardData";
 import DeleteProductModal from "./DeleteProductModal";
 const { useBreakpoint } = Grid;
+
+const getStockStatus = (quantity) => {
+  let color;
+  let label;
+  let icon;
+
+  if (quantity === 0) {
+    color = "#FF0000";
+    label = "Out of Stock";
+    icon = <CloseCircleOutlined />;
+  } else if (quantity < 10) {
+    color = "#FFA500";
+    label = "Low Stock";
+    icon = <WarningOutlined />;
+  } else {
+    color = "#008000";
+    label = "In Stock";
+    icon = <CheckCircleOutlined />;
+  }
+
+  return (
+    <Tag
+      color={color}
+      className="px-3 py-1 rounded-full text-sm font-semibold shadow-md"
+      icon={icon}
+    >
+      {label}
+    </Tag>
+  );
+};
 
 const StockTable = ({ stock, total, loading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -45,7 +75,7 @@ const StockTable = ({ stock, total, loading }) => {
         const status = row?.product?.status;
 
         return (
-          <div className="py-4">
+          <div className="py-4 [@media(min-width:380px)]:px-4">
             <div className="flex justify-between mb-2">
               <section className="text-left">
                 <ProductCardData label="Product Name" name={name} />
@@ -169,57 +199,6 @@ const StockTable = ({ stock, total, loading }) => {
     },
   ];
 
-  const getStockStatus = (quantity) => {
-    let color;
-    let label;
-    let icon;
-
-    if (quantity === 0) {
-      color = "#FF0000";
-      label = "Out of Stock";
-      icon = <CloseCircleOutlined />;
-    } else if (quantity < 10) {
-      color = "#FFA500";
-      label = "Low Stock";
-      icon = <WarningOutlined />;
-    } else {
-      color = "#008000";
-      label = "In Stock";
-      icon = <CheckCircleOutlined />;
-    }
-
-    return (
-      <Tag
-        color={color}
-        className="px-3 py-1 rounded-full text-sm font-semibold shadow-md"
-        icon={icon}
-      >
-        {label}
-      </Tag>
-    );
-  };
-
-  const getActions = (record) => {
-    return (
-      <div className="flex gap-1">
-        <Tooltip title={isAdmin ? "Edit Product" : "Only admins can edit"}>
-          <Button
-            disabled={!isAdmin}
-            icon={<EditOutlined />}
-            onClick={() => handleRowEditClick(record)}
-          />
-        </Tooltip>
-        <Tooltip title={isAdmin ? "Delete Product" : "Only admins can delete"}>
-          <Button
-            disabled={!isAdmin}
-            icon={<DeleteOutlined />}
-            onClick={() => handleRowDeleteClick(record)}
-          />
-        </Tooltip>
-      </div>
-    );
-  };
-
   const handleRowEditClick = (record) => {
     form.setFieldsValue({
       name: record?.product?.name,
@@ -236,6 +215,7 @@ const StockTable = ({ stock, total, loading }) => {
   };
   const handleCancel = () => {
     setIsModalVisible(false);
+    form.resetFields();
   };
 
   const handleRowDeleteClick = (record) => {
@@ -256,7 +236,29 @@ const StockTable = ({ stock, total, loading }) => {
 
   const handleCancelDeleteModal = () => {
     setOpenDeleteModal(false);
+    form.resetFields();
   };
+
+  const getActions = useCallback((record) => {
+    return (
+      <div className="flex gap-1">
+        <Tooltip title={isAdmin ? "Edit Product" : "Only admins can edit"}>
+          <Button
+            disabled={!isAdmin}
+            icon={<EditOutlined />}
+            onClick={() => handleRowEditClick(record)}
+          />
+        </Tooltip>
+        <Tooltip title={isAdmin ? "Delete Product" : "Only admins can delete"}>
+          <Button
+            disabled={!isAdmin}
+            icon={<DeleteOutlined />}
+            onClick={() => handleRowDeleteClick(record)}
+          />
+        </Tooltip>
+      </div>
+    );
+  });
 
   return (
     <>

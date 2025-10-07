@@ -29,7 +29,48 @@ const useStock = () => {
     }
   };
 
-  return { getStocksfromCustomHook };
+  // TODO: add Stock
+  const addStockCustomHook = async () => {
+    try {
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+    }
+  };
+
+  // TODO: update Stock
+  const updateStockCustomHook = async () => {
+    try {
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+    }
+  };
+
+  // TODO: delete Stock
+  const deleteStockCustomHook = async () => {
+    try {
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+    }
+  };
+
+  return {
+    getStocksfromCustomHook,
+    addStockCustomHook,
+    updateStockCustomHook,
+    deleteStockCustomHook,
+  };
 };
 
 export default useStock;

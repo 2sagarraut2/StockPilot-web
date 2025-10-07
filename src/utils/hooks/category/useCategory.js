@@ -1,7 +1,8 @@
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../redux/categorySlice";
-import { categoryData } from "../../../api/stockDetails";
+import { addCategory, categoryData } from "../../../api/stockDetails";
 import { addCategoryPage, setCategory } from "../../redux/categorySlice";
+import { showMessage } from "../../../components/common/CustomMessage";
 
 const useCategory = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,67 @@ const useCategory = () => {
     }
   };
 
-  return { getCategoriesFromCustomHook };
+  // TODO: add category
+  const addCategoryCustomHook = async (data) => {
+    try {
+      dispatch(setLoading(true));
+      try {
+        const res = await addCategory(data);
+
+        if (res.status === 200) {
+          const limit = 10;
+          console.log("called from Category");
+          showMessage({
+            type: "success",
+            text: res?.data?.message,
+          });
+        }
+      } catch (err) {
+        console.log(err);
+        showMessage({
+          type: "error",
+          text: err?.response?.data?.error || "Something went wrong",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+    }
+  };
+
+  // TODO: update category
+  const updateCategoryCustomHook = async () => {
+    try {
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+    }
+  };
+
+  // TODO: delete category
+  const deleteCategoryCustomHook = async () => {
+    try {
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+    }
+  };
+
+  return {
+    getCategoriesFromCustomHook,
+    addCategoryCustomHook,
+    updateCategoryCustomHook,
+    deleteCategoryCustomHook,
+  };
 };
 
 export default useCategory;

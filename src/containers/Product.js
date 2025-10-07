@@ -2,10 +2,8 @@ import StockTable from "../components/StockTable";
 import { useDispatch, useSelector } from "react-redux";
 import ProductSearch from "../components/ProductSearch";
 import CustomHeading from "../components/common/CustomHeading";
-import { showMessage } from "../components/common/CustomMessage";
-import { insertProduct } from "../utils/redux/productSlice";
-import { addProduct } from "../api/stockDetails";
 import useStock from "../utils/hooks/stock/useStock";
+import useProduct from "../utils/hooks/product/useProduct";
 import { useState } from "react";
 
 const Product = () => {
@@ -16,28 +14,13 @@ const Product = () => {
   const dispatch = useDispatch();
   const { getStocksfromCustomHook } = useStock();
 
+  const { addProductCustomHook } = useProduct();
+
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleAddProductButtonClick = async (data) => {
-    try {
-      const res = await addProduct(data);
-
-      if (res.status === 200) {
-        showMessage({
-          type: "success",
-          text: res?.data?.message,
-        });
-        // dispatch(insertProduct(res.data.data));
-
-        getStocksfromCustomHook(1, 10);
-      }
-    } catch (err) {
-      console.log(err);
-      showMessage({
-        type: "error",
-        text: err?.response?.data?.error || "Something went wrong",
-      });
-    }
+    addProductCustomHook(data);
+    getStocksfromCustomHook(1, 10);
   };
 
   return (
