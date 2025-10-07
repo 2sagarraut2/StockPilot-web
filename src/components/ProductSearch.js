@@ -8,6 +8,7 @@ import {
   setLoading,
 } from "../utils/redux/stockSlice";
 import { useEffect, useState } from "react";
+import AllCategories from "./AllCategories";
 
 const ProductSearch = () => {
   const [searchText, setSearchText] = useState("");
@@ -15,10 +16,10 @@ const ProductSearch = () => {
   const categoryValues = useSelector((store) => store.category.items);
   const dispatch = useDispatch();
 
-  // const options = categoryValues.map((item) => ({
-  //   value: item._id,
-  //   label: item.name,
-  // }));
+  const options = categoryValues.map((item) => ({
+    value: item._id,
+    label: item.name,
+  }));
 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
@@ -73,15 +74,16 @@ const ProductSearch = () => {
           onClear={handlSearchClear}
         />
       </div>
-      <div>
+      {/* <div>
         <Select
           defaultValue="All"
           style={{ width: 120 }}
           onChange={handleChange}
           variant="filled"
-          // options={options}
+          options={options}
         />
-      </div>
+      </div> */}
+      <AllCategories />
     </div>
   );
 };

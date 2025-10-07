@@ -1,7 +1,7 @@
 import { Form, Input, Modal } from "antd";
 import AllCategories from "./AllCategories";
 
-const EditAddProductModal = ({
+const EditAddCategoryModal = ({
   isModalVisible,
   handleOk,
   handleCancel,
@@ -9,7 +9,7 @@ const EditAddProductModal = ({
 }) => {
   return (
     <Modal
-      title="Edit Category"
+      title="Edit Product"
       open={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -23,18 +23,9 @@ const EditAddProductModal = ({
         <Form.Item name="description" label="Description" required>
           <Input size="large" />
         </Form.Item>
-        <Form.Item name="categoryId" label="Category" required>
-          <AllCategories />
-        </Form.Item>
-        <Form.Item name="price" label="Price (₹)" required>
-          <Input type="number" />
-        </Form.Item>
-        <Form.Item name="sku" label="SKU" required>
-          <Input size="large" />
-        </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default EditAddProductModal;
+export default EditAddCategoryModal;

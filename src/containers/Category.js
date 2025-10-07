@@ -19,6 +19,7 @@ const Category = () => {
   const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleLoadMore = () => {
     setPage((prev) => prev + 1);
@@ -27,9 +28,6 @@ const Category = () => {
   };
 
   const handleAddCategory = async (data) => {
-    console.log("Add Category called");
-    console.log(data);
-
     setLoading(true);
     try {
       const res = await addCategory(data);
@@ -61,12 +59,10 @@ const Category = () => {
         tagLine={CATEGORY_MANAGEMENT_TAGLINE}
         buttonText={CATEGORY_MANAGEMENT_BUTTON}
         isProduct="false"
-        onAdd={() =>
-          handleAddCategory({
-            name: "Apple MacBooks Macbook - 8",
-            description: "Apple computers - 8",
-          })
-        }
+        handleAddCategory={handleAddCategory}
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        onAdd={() => setIsModalVisible(true)}
       />
       <Row gutter={[16, 16]} style={{ marginBottom: "4%" }}>
         {items &&

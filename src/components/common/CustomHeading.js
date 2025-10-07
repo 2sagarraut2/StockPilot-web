@@ -1,13 +1,45 @@
-import { Button } from "antd";
+import { Button, Form } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import { PlusOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import AddButton from "../AddButton";
+import { useState } from "react";
+import EditAddProductModal from "../EditAddProductModal";
+import EditAddCategoryModal from "../EditAddCategoryModal";
 
 const CustomHeading = (props) => {
-  const { title, tagLine, buttonText, onAdd } = props;
+  const {
+    title,
+    tagLine,
+    buttonText,
+    onAdd,
+    isModalVisible,
+    setIsModalVisible,
+    handleAddCategory,
+    handleAddProductButtonClick,
+  } = props;
   const userRole = useSelector((store) => store.user.user.role.label);
+
+  const [form] = Form.useForm();
+
+  const handleOk = () => {
+    console.log("here");
+    setIsModalVisible(false);
+    console.log("form", form.getFieldsValue());
+    const data = form.getFieldsValue();
+
+    if (title === "Category Management") handleAddCategory(data);
+
+    if (title === "Product Management") handleAddProductButtonClick(data);
+
+    console.log("clear category");
+    form.resetFields();
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   // const handleButtonClick = () => {
   //   if (isProduct) {
@@ -55,6 +87,24 @@ const CustomHeading = (props) => {
           </div> */}
           <AddButton handleButtonClick={onAdd} buttonText={buttonText} />
         </>
+      )}
+
+      {title === "Product Management" && (
+        <EditAddProductModal
+          isModalVisible={isModalVisible}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+          form={form}
+        />
+      )}
+
+      {title === "Category Management" && (
+        <EditAddCategoryModal
+          isModalVisible={isModalVisible}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+          form={form}
+        />
       )}
     </section>
   );

@@ -176,11 +176,10 @@ const StockTable = ({ stock, total, loading }) => {
   };
 
   const handleRowEditClick = (record) => {
-    console.log(record);
     form.setFieldsValue({
       name: record?.product?.name,
       description: record?.product.description,
-      category: record?.product?.category?.name,
+      categoryId: record?.product?.category?._id,
       price: record?.product?.price,
       sku: record?.product?.sku,
     });

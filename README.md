@@ -89,10 +89,8 @@ Inspired by real-world stock & inventory management challenges.
 - **Features to be implemented:**
   - Fix Header responsive behaviour
   - Add extra features to Dashboard
-  - Implement add new product API
   - Implement FE sorting for products on basis of category
   - Implement Edit products API
-  - Implement getAllCategories for Update product feature
+  - Fix allcategories drown on Edit Product page to remove All Option
   - Update Edit Product page
-  - Implement Add Category API
   - Implement Edit Category, Delete Category API

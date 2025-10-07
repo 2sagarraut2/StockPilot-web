@@ -6,6 +6,7 @@ import { showMessage } from "../components/common/CustomMessage";
 import { insertProduct } from "../utils/redux/productSlice";
 import { addProduct } from "../api/stockDetails";
 import useStock from "../utils/hooks/useStock";
+import { useState } from "react";
 
 const Product = () => {
   const { displayedStocks, total, loading } = useSelector(
@@ -15,7 +16,9 @@ const Product = () => {
   const dispatch = useDispatch();
   const { getStocksfromCustomHook } = useStock();
 
-  const handleAddButtonClick = async (data) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleAddProductButtonClick = async (data) => {
     try {
       const res = await addProduct(data);
 
@@ -43,15 +46,12 @@ const Product = () => {
         title="Product Management"
         tagLine="Manage your inventory products and stock levels."
         buttonText="Add Product"
-        onAdd={() =>
-          handleAddButtonClick({
-            name: "iPhone 23 Pro Max",
-            description: "iPhone 23 Pro Max",
-            categoryId: "68d35ef66f20d335accbfd73",
-            price: "99000",
-            sku: "IPHONE-23 Pro Max",
-          })
-        }
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        handleAddProductButtonClick={handleAddProductButtonClick}
+        onAdd={() => {
+          setIsModalVisible(true);
+        }}
       />
       <section>
         <ProductSearch />
