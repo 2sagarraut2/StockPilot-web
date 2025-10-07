@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { authService } from "../../api/auth";
-import { showMessage } from "../../components/common/CustomMessage";
+import { authService } from "../../../api/auth";
+import { showMessage } from "../../../components/common/CustomMessage";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/userSlice";
+import { setUser } from "../../redux/userSlice";
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);

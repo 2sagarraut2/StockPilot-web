@@ -8,7 +8,7 @@ import {
   CATEGORY_MANAGEMENT_TITLE,
 } from "../utils/constants";
 import { useState } from "react";
-import useCategory from "../utils/hooks/useCategory";
+import useCategory from "../utils/hooks/category/useCategory";
 import { addCategory } from "../api/stockDetails";
 import { showMessage } from "../components/common/CustomMessage";
 import { setLoading } from "../utils/redux/categorySlice";

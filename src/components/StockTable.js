@@ -2,18 +2,23 @@ import { Button, Form, Input, Modal, Table, Tag, Tooltip } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  DeleteOutlined,
   EditOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useStock from "../utils/hooks/useStock";
+import useStock from "../utils/hooks/stock/useStock";
 import { Grid } from "antd";
 import EditAddProductModal from "./EditAddProductModal";
+import ProductCardData from "./ProductCardData";
+import DeleteProductModal from "./DeleteProductModal";
 const { useBreakpoint } = Grid;
 
 const StockTable = ({ stock, total, loading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [confirmLoadingDeleteModal, setConfirmLoadingDelete] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -31,24 +36,53 @@ const StockTable = ({ stock, total, loading }) => {
       dataIndex: "product name",
       align: "left",
       render: (value, row, index) => {
-        const name = row.product.name;
-        const sku = row.product.sku;
+        const name = row?.product?.name;
+        const description = row?.product?.description;
+        const sku = row?.product?.sku;
+        const category = row?.product?.category?.name;
+        const price = row?.product?.price;
+        const quantity = row?.quantity;
+        const status = row?.product?.status;
 
         return (
-          <div>
-            <div className="small-table-div">
-              <span>
-                <h5 className="small-table-label font-semibold">
-                  Product Name
-                </h5>
-                <h5>{name}</h5>
-              </span>
-              <span>
-                <h5 className="small-table-label font-semibold">SKU</h5>
+          <div className="py-4">
+            <div className="flex justify-between mb-2">
+              <section className="text-left">
+                <ProductCardData label="Product Name" name={name} />
+              </section>
+              <section className="text-right">
+                <ProductCardData
+                  label="Product description"
+                  name={description}
+                />
+              </section>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span className="">
+                <div className="text-xs">SKU</div>
                 <Tag className="rounded-xl p-2 border border-gray-200 font-medium">
-                  {name}
+                  {sku}
                 </Tag>
               </span>
+              <section className="text-right">
+                <ProductCardData label="Category" name={category} />
+              </section>
+            </div>
+            <div className="flex justify-between mb-2">
+              <section className="text-left">
+                <ProductCardData label="Price" name={price} />
+              </section>
+              <section className="text-right">
+                <ProductCardData label="Quantity" name={quantity} />
+              </section>
+            </div>
+            <div className="flex justify-center mb-4">
+              <section className="text-center">
+                {getStockStatus(quantity)}
+              </section>
+            </div>
+            <div className="flex justify-center">
+              <section className="text-center">{getActions(row)}</section>
             </div>
           </div>
         );
@@ -130,18 +164,8 @@ const StockTable = ({ stock, total, loading }) => {
     {
       title: "Actions",
       key: "actions",
-      width: 70,
-      render: (record) => (
-        <span>
-          <Tooltip title={isAdmin ? "Edit Product" : "Only admins can edit"}>
-            <Button
-              disabled={!isAdmin}
-              icon={<EditOutlined />}
-              onClick={() => handleRowEditClick(record)}
-            />
-          </Tooltip>
-        </span>
-      ),
+      width: 80,
+      render: (record) => getActions(record),
     },
   ];
 
@@ -175,6 +199,27 @@ const StockTable = ({ stock, total, loading }) => {
     );
   };
 
+  const getActions = (record) => {
+    return (
+      <div className="flex gap-1">
+        <Tooltip title={isAdmin ? "Edit Product" : "Only admins can edit"}>
+          <Button
+            disabled={!isAdmin}
+            icon={<EditOutlined />}
+            onClick={() => handleRowEditClick(record)}
+          />
+        </Tooltip>
+        <Tooltip title={isAdmin ? "Delete Product" : "Only admins can delete"}>
+          <Button
+            disabled={!isAdmin}
+            icon={<DeleteOutlined />}
+            onClick={() => handleRowDeleteClick(record)}
+          />
+        </Tooltip>
+      </div>
+    );
+  };
+
   const handleRowEditClick = (record) => {
     form.setFieldsValue({
       name: record?.product?.name,
@@ -191,6 +236,26 @@ const StockTable = ({ stock, total, loading }) => {
   };
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const handleRowDeleteClick = (record) => {
+    console.log(record._id);
+    setOpenDeleteModal(true);
+  };
+
+  const handleDeleteOk = () => {
+    setConfirmLoadingDelete(true);
+
+    setTimeout(() => {
+      setOpenDeleteModal(false);
+      setConfirmLoadingDelete(false);
+    }, 2000);
+
+    // write API call to delete product
+  };
+
+  const handleCancelDeleteModal = () => {
+    setOpenDeleteModal(false);
   };
 
   return (
@@ -245,6 +310,14 @@ const StockTable = ({ stock, total, loading }) => {
             handleOk={handleOk}
             handleCancel={handleCancel}
             form={form}
+          />
+
+          <DeleteProductModal
+            openDeleteModal={openDeleteModal}
+            handleDeleteOk={handleDeleteOk}
+            confirmLoadingDeleteModal={confirmLoadingDeleteModal}
+            handleCancelDeleteModal={handleCancelDeleteModal}
+            modalText="Delete Product"
           />
         </div>
       )}

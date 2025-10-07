@@ -91,6 +91,6 @@ Inspired by real-world stock & inventory management challenges.
   - Add extra features to Dashboard
   - Implement FE sorting for products on basis of category
   - Implement Edit products API
-  - Fix allcategories drown on Edit Product page to remove All Option
+  - Fix allcategories drown on Edit Product page to remove All Option / Add All Option on Product page dropdown
   - Update Edit Product page
   - Implement Edit Category, Delete Category API

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { setLoading, setStock } from "../redux/stockSlice";
-import { stockData } from "../../api/stockDetails";
+import { setLoading, setStock } from "../../redux/stockSlice";
+import { stockData } from "../../../api/stockDetails";
 
 const useStock = () => {
   const dispatch = useDispatch();

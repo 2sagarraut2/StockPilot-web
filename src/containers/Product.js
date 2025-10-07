@@ -5,7 +5,7 @@ import CustomHeading from "../components/common/CustomHeading";
 import { showMessage } from "../components/common/CustomMessage";
 import { insertProduct } from "../utils/redux/productSlice";
 import { addProduct } from "../api/stockDetails";
-import useStock from "../utils/hooks/useStock";
+import useStock from "../utils/hooks/stock/useStock";
 import { useState } from "react";
 
 const Product = () => {

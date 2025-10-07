@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { showMessage } from "../../components/common/CustomMessage";
-import { setUser } from "../redux/userSlice";
-import { profileData } from "../../api/auth";
+import { showMessage } from "../../../components/common/CustomMessage";
+import { setUser } from "../../redux/userSlice";
+import { profileData } from "../../../api/auth";
 import { useNavigate } from "react-router";
 
 const useProfile = () => {

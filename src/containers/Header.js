@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setStock } from "../utils/redux/stockSlice";
 import { categoryData, stockData } from "../api/stockDetails";
 import { setCategory } from "../utils/redux/categorySlice";
-import useStock from "../utils/hooks/useStock";
-import useCategory from "../utils/hooks/useCategory";
-import useProfile from "../utils/hooks/useProfile";
+import useStock from "../utils/hooks/stock/useStock";
+import useCategory from "../utils/hooks/category/useCategory";
+import useProfile from "../utils/hooks/user/useProfile";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -75,7 +75,6 @@ const Header = () => {
   useEffect(() => {
     const limit = 10;
     const page = 1;
-    console.log("Called from Header");
     getCategoriesFromCustomHook(page, limit);
   }, []);
 

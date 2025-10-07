@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useCategory from "../utils/hooks/useCategory";
+import useCategory from "../utils/hooks/category/useCategory";
 import { Select, Spin } from "antd";
 import { useSelector } from "react-redux";
 
