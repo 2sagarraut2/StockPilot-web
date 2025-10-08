@@ -16,12 +16,11 @@ import { LoadingOutlined } from "@ant-design/icons";
 const AppLayout = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      <div className="md:w-55 md:flex-shrink-0 hidden md:block ">
-        <Header />
-      </div>
+      <Header />
 
       <div className="flex-1 overflow-y-auto bg-gray-50">
         <Title />
+
         <Outlet />
       </div>
     </div>

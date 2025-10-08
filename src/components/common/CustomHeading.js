@@ -55,12 +55,15 @@ const CustomHeading = (props) => {
   // };
 
   return (
-    <section className="flex justify-between">
+    <section className="md:flex justify-between ">
       {title && (
         <div className="">
           <Title
             level={2}
-            style={{ fontSize: "bold", fontWeight: 700, marginBottom: "2px" }}
+            style={{
+              fontWeight: 700,
+              marginBottom: "2px",
+            }}
           >
             {title}
           </Title>

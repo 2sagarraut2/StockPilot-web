@@ -1,9 +1,12 @@
 import { TITLE } from "../utils/constants";
 import { Link } from "react-router-dom";
 
-const LogoComponent = () => {
+const LogoComponent = ({ isOpen, setIsOpen }) => {
+  const handleMenuClick = () => {
+    setIsOpen(!isOpen);
+  };
   return (
-    <Link to="/" className="no-underline my-6 ">
+    <Link to="/" className="no-underline my-6 " onClick={handleMenuClick}>
       <div className="flex items-center gap-3 ">
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -87,10 +87,8 @@ Developed by **Sagar Raut**
 Inspired by real-world stock & inventory management challenges.
 
 - **Features to be implemented:**
-  - Fix Header responsive behaviour
   - Add extra features to Dashboard
   - Implement sorting for products on basis of category
-  - Implement Edit products API
   - Fix allcategories drown on Edit Product page to remove All Option / Add All Option on Product page dropdown
   - Update Edit Product page
   - Implement Edit Category, Delete Category API

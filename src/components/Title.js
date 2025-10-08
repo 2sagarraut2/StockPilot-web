@@ -46,7 +46,7 @@ const Title = () => {
   );
 
   return (
-    <div className="flex justify-between items-baseline px-8 py-6 border-b border-[#ddd] shadow-sm bg-white">
+    <div className="flex flex-wrap justify-center sm:justify-between items-baseline pl-14 md:px-6 py-6 border-b border-[#ddd] shadow-sm bg-white">
       <Paragraph style={{ margin: 0 }}>{WELCOME_NOTE}</Paragraph>
       {user && (
         <div>

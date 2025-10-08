@@ -6,24 +6,40 @@ import {
   TagsOutlined,
 } from "@ant-design/icons";
 
-const NavigationComponent = () => {
+const NavigationComponent = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
   const path = location.pathname;
+
+  const handleMenuClick = () => {
+    setIsOpen(!isOpen);
+  };
 
   const linksObj = [
     {
       key: "/",
-      label: <Link to="/">Dashboard</Link>,
+      label: (
+        <Link to="/" onClick={handleMenuClick}>
+          Dashboard
+        </Link>
+      ),
       icon: <DashboardOutlined style={{ fontSize: "18px" }} />,
     },
     {
       key: "/products",
-      label: <Link to="/products">Products</Link>,
+      label: (
+        <Link to="/products" onClick={handleMenuClick}>
+          Products
+        </Link>
+      ),
       icon: <ProductOutlined style={{ fontSize: "18px" }} />,
     },
     {
       key: "/categories",
-      label: <Link to="/categories">Categories</Link>,
+      label: (
+        <Link to="/categories" onClick={handleMenuClick}>
+          Categories
+        </Link>
+      ),
       icon: <TagsOutlined style={{ fontSize: "18px" }} />,
     },
   ];
