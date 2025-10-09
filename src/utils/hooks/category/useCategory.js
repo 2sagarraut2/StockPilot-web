@@ -25,6 +25,8 @@ const useCategory = () => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -55,6 +57,8 @@ const useCategory = () => {
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",
       });
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 

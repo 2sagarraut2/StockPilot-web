@@ -86,6 +86,7 @@ export default function AuthForm({ mode = "login" }) {
                   label="First Name"
                   {...field}
                   error={errors.firstName?.message}
+                  placeholder="Enter your first name"
                 />
               )}
             />
@@ -98,6 +99,7 @@ export default function AuthForm({ mode = "login" }) {
                   label="Last Name"
                   {...field}
                   error={errors.lastName?.message}
+                  placeholder="Enter your last name"
                 />
               )}
             />
@@ -113,6 +115,7 @@ export default function AuthForm({ mode = "login" }) {
               type="email"
               {...field}
               error={errors.email?.message}
+              placeholder="Enter your email"
             />
           )}
         />
@@ -125,6 +128,7 @@ export default function AuthForm({ mode = "login" }) {
               label="Password"
               {...field}
               error={errors.password?.message}
+              placeholder="Enter your passoword"
             />
           )}
         />
@@ -142,6 +146,7 @@ export default function AuthForm({ mode = "login" }) {
                 label="Confirm Password"
                 {...field}
                 error={errors.confirmPassword?.message}
+                placeholder="Re-confirm your passoword"
               />
             )}
           />

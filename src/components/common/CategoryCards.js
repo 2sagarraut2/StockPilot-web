@@ -1,6 +1,9 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Tooltip } from "antd";
+import { Button, Card, Col, Tooltip, Typography } from "antd";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+const { Title } = Typography;
 
 const CategoryCards = ({ category, loading }) => {
   const userRole = useSelector((store) => store.user.user.role.label);
@@ -18,11 +21,23 @@ const CategoryCards = ({ category, loading }) => {
   };
 
   const actions = [
-    <span>
+    <div className="flex justify-center align-middle">
+      <Title
+        style={{
+          fontSize: "small",
+          justifyItems: "baseline",
+          fontWeight: "normal",
+          margin: 0,
+        }}
+      >
+        Created: 01/01/2024
+      </Title>
+    </div>,
+    <span className="flex gap-8 justify-center">
       <Tooltip title={isAdmin ? "Edit Category" : "Only admins can edit"}>
         <EditOutlined
           key="edit"
-          className="hover:cursor-pointer"
+          className="hover:cursor-pointer border p-2 border-gray-300 rounded-sm hover:bg-gray-200"
           style={isAdmin ? activeStyle : disabledStyle}
           onClick={(e) => {
             if (!isAdmin) {
@@ -34,12 +49,10 @@ const CategoryCards = ({ category, loading }) => {
           }}
         />
       </Tooltip>
-    </span>,
-    <span>
       <Tooltip title={isAdmin ? "Delete Category" : "Only admins can delete"}>
         <DeleteOutlined
           key="delete"
-          className="hover:cursor-pointer"
+          className="hover:cursor-pointer border p-2 border-gray-300 rounded-sm hover:bg-gray-200"
           style={isAdmin ? activeStyle : disabledStyle}
           onClick={(e) => {
             if (!isAdmin) {
@@ -88,7 +101,7 @@ const CategoryCards = ({ category, loading }) => {
                   <path d="m7.5 4.27 9 5.15"></path>
                 </svg>
               }
-              title={category.name}
+              title={<Link to="/">{category.name}</Link>}
               description={
                 <>
                   <p className="overflow-hidden whitespace-nowrap overflow-ellipsis">

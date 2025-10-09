@@ -1,6 +1,11 @@
 import { useDispatch } from "react-redux";
-import { setLoading, setStock } from "../../redux/stockSlice";
-import { stockData } from "../../../api/stockDetails";
+import {
+  filterStocks,
+  resetFilter,
+  setLoading,
+  setStock,
+} from "../../redux/stockSlice";
+import { searchProductData, stockData } from "../../../api/stockDetails";
 
 const useStock = () => {
   const dispatch = useDispatch();
@@ -29,6 +34,45 @@ const useStock = () => {
     }
   };
 
+  // filterStock
+  const filterStockCustoHook = async (searchText) => {
+    dispatch(setLoading(true));
+    try {
+      const res = await searchProductData(searchText);
+
+      if (res.status === 200) {
+        const { message, data, total } = res.data;
+
+        if (Array.isArray(data)) {
+          // create a separate reducer for searchData
+          dispatch(filterStocks({ items: data, total }));
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+      dispatch(setLoading(false));
+    }
+  };
+
+  // TODO: resetFiltered stocks
+  const resetFilterCustomHook = async () => {
+    dispatch(setLoading(true));
+    try {
+      dispatch(resetFilter({ items: data, total }));
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+      dispatch(setLoading(false));
+    }
+  };
+
   // TODO: add Stock
   const addStockCustomHook = async () => {
     try {
@@ -42,7 +86,7 @@ const useStock = () => {
   };
 
   // TODO: update Stock
-  const updateStockCustomHook = async () => {
+  const updateStockCustomHook = async (data) => {
     try {
     } catch (err) {
       console.log(err);
@@ -54,7 +98,7 @@ const useStock = () => {
   };
 
   // TODO: delete Stock
-  const deleteStockCustomHook = async () => {
+  const deleteStockCustomHook = async (stockId) => {
     try {
     } catch (err) {
       console.log(err);
@@ -70,6 +114,8 @@ const useStock = () => {
     addStockCustomHook,
     updateStockCustomHook,
     deleteStockCustomHook,
+    filterStockCustoHook,
+    resetFilterCustomHook,
   };
 };
 

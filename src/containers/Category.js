@@ -55,11 +55,18 @@ const Category = () => {
             );
           })}
       </Row>
-      {items.length < total && (
-        <Button onClick={handleLoadMore} disabled={loading}>
-          {loading ? "Loading..." : "Load More"}
-        </Button>
-      )}
+      <div className="text-center">
+        {items.length < total && (
+          <Button
+            color="default"
+            variant="solid"
+            onClick={handleLoadMore}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Load More"}
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

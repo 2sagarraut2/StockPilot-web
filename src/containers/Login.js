@@ -3,6 +3,7 @@ import LoginPage from "../components/LoginPage";
 import SignupPage from "../components/SignupPage";
 import { Flex, Radio } from "antd";
 import LogoComponent from "../components/LogoComponent";
+import IntroModal from "../components/IntroModal";
 
 const Login = () => {
   const [isLogIn, setIsLogIn] = useState(true);
@@ -38,6 +39,7 @@ const Login = () => {
           />
         </Flex>
         {isLogIn ? <LoginPage /> : <SignupPage />}
+        <IntroModal />
       </div>
     </div>
   );

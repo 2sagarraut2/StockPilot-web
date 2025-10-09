@@ -11,6 +11,7 @@ import Login from "../containers/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
 const ProductComponent = lazy(() => import("./Product"));
 const CategoryComponent = lazy(() => import("./Category"));
+const StockInOutComponent = lazy(() => import("./StockInOut"));
 import { LoadingOutlined } from "@ant-design/icons";
 
 const AppLayout = () => {
@@ -60,6 +61,14 @@ const appRouter = createBrowserRouter([
           </Suspense>
         ),
       },
+      // {
+      //   path: "/stockInOut",
+      //   element: (
+      //     <Suspense fallback={<LoadingOutlined />}>
+      //       <StockInOutComponent />
+      //     </Suspense>
+      //   ),
+      // },
       { path: "*", element: <Error /> },
     ],
   },

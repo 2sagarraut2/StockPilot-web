@@ -39,7 +39,7 @@ const AllCategories = ({ value, onChange }) => {
     <Select
       value={value}
       onChange={onChange}
-      defaultValue="All"
+      //   defaultValue="All"
       style={{ width: 200 }}
       variant="filled"
       options={options}

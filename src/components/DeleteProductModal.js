@@ -18,6 +18,10 @@ const DeleteProductModal = ({
         onOk={handleDeleteOk}
         confirmLoading={confirmLoadingDeleteModal}
         onCancel={handleCancelDeleteModal}
+        okButtonProps={{
+          color: "default",
+          variant: "solid",
+        }}
       >
         <p>
           {modalText} <span className="font-bold">{productName}?</span>

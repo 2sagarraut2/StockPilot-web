@@ -6,7 +6,7 @@ import {
   EditOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useStock from "../utils/hooks/stock/useStock";
 import { Grid } from "antd";
@@ -14,6 +14,7 @@ import EditAddProductModal from "./EditAddProductModal";
 import ProductCardData from "./ProductCardData";
 import DeleteProductModal from "./DeleteProductModal";
 import useProduct from "../utils/hooks/product/useProduct";
+import { Link } from "react-router-dom";
 const { useBreakpoint } = Grid;
 
 const getStockStatus = (quantity) => {
@@ -46,15 +47,11 @@ const getStockStatus = (quantity) => {
   );
 };
 
-const StockTable = ({ stock, total, loading }) => {
+const StockTable = ({ stock, total, loading, pagination, setPagination }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [confirmLoadingDeleteModal, setConfirmLoadingDelete] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-  });
 
   const userRole = useSelector((store) => store.user.user.role.label);
   const isAdmin = userRole === "admin";
@@ -139,8 +136,10 @@ const StockTable = ({ stock, total, loading }) => {
     {
       title: "Product Name",
       render: (record) => (
-        <div className="p-0">
-          <div className="font-medium">{record.product.name}</div>
+        <div className="p-0 ">
+          <Link className="font-medium hover:underline" to="/">
+            {record.product.name}
+          </Link>
           <div className="text-gray-500">{record.product.description}</div>
         </div>
       ),
@@ -314,6 +313,7 @@ const StockTable = ({ stock, total, loading }) => {
           </Modal> */}
 
           <EditAddProductModal
+            title="Edit Product"
             isModalVisible={isModalVisible}
             handleOk={handleOk}
             handleCancel={handleCancel}

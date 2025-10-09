@@ -11,6 +11,12 @@ const Product = () => {
     (state) => state.stock
   );
 
+  const [searchText, setSearchText] = useState("");
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+  });
+
   const dispatch = useDispatch();
   const { getStocksfromCustomHook } = useStock();
 
@@ -37,10 +43,20 @@ const Product = () => {
         }}
       />
       <section>
-        <ProductSearch />
+        <ProductSearch
+          searchText={searchText}
+          setSearchText={setSearchText}
+          setPagination={setPagination}
+        />
       </section>
       <div className="border border-gray-300 rounded-lg pt-6 px-8 bg-white">
-        <StockTable stock={displayedStocks} total={total} loading={loading} />
+        <StockTable
+          stock={displayedStocks}
+          total={total}
+          loading={loading}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
       </div>
     </div>
   );

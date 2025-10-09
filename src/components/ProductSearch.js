@@ -9,11 +9,11 @@ import {
 } from "../utils/redux/stockSlice";
 import { useEffect, useState } from "react";
 import AllCategories from "./AllCategories";
+import useStock from "../utils/hooks/stock/useStock";
 
-const ProductSearch = () => {
-  const [searchText, setSearchText] = useState("");
-
+const ProductSearch = ({ searchText, setSearchText, setPagination }) => {
   const categoryValues = useSelector((store) => store.category.items);
+  const { getStocksfromCustomHook, filterStockCustoHook } = useStock();
   const dispatch = useDispatch();
 
   const options = categoryValues.map((item) => ({
@@ -28,34 +28,43 @@ const ProductSearch = () => {
   useEffect(() => {
     const delayBounce = setTimeout(() => {
       if (searchText.trim().length > 0) {
-        getSearchresults(searchText);
+        filterStockCustoHook(searchText);
+      } else {
+        getStocksfromCustomHook(1, 10);
       }
     }, 3000);
 
     return () => clearTimeout(delayBounce);
   }, [searchText]);
 
-  const getSearchresults = async (query) => {
-    dispatch(setLoading(true));
-    try {
-      const res = await searchProductData(searchText);
+  // const getSearchresults = async (query) => {
+  //   dispatch(setLoading(true));
+  //   try {
+  //     const res = await searchProductData(searchText);
 
-      if (res.status === 200) {
-        const { message, data, total } = res.data;
+  //     if (res.status === 200) {
+  //       const { message, data, total } = res.data;
 
-        if (Array.isArray(data)) {
-          // create a separate reducer for searchData
-          dispatch(filterStocks({ items: data, total }));
-        }
-      }
-    } catch (err) {
-      console.log(err);
-      dispatch(setLoading(false));
-    }
-  };
+  //       if (Array.isArray(data)) {
+  //         // create a separate reducer for searchData
+  //         dispatch(filterStocks({ items: data, total }));
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     dispatch(setLoading(false));
+  //   }
+  // };
 
   const handlSearchClear = () => {
     dispatch(resetFilter());
+    const page = 1;
+    const limit = 10;
+    getStocksfromCustomHook(page, limit);
+    setPagination({
+      current: page,
+      pageSize: limit,
+    });
   };
 
   return (

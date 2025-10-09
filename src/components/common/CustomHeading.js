@@ -91,6 +91,7 @@ const CustomHeading = (props) => {
 
       {title === "Product Management" && (
         <EditAddProductModal
+          title="Add Product"
           isModalVisible={isModalVisible}
           handleOk={handleOk}
           handleCancel={handleCancel}
@@ -100,6 +101,7 @@ const CustomHeading = (props) => {
 
       {title === "Category Management" && (
         <EditAddCategoryModal
+          title="Add Category"
           isModalVisible={isModalVisible}
           handleOk={handleOk}
           handleCancel={handleCancel}

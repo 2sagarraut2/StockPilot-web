@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import {
   DashboardOutlined,
   ProductOutlined,
+  RetweetOutlined,
+  SwapOutlined,
   TagsOutlined,
 } from "@ant-design/icons";
 
@@ -41,6 +43,15 @@ const NavigationComponent = ({ isOpen, setIsOpen }) => {
         </Link>
       ),
       icon: <TagsOutlined style={{ fontSize: "18px" }} />,
+    },
+    {
+      key: "/stockInOut",
+      label: (
+        <Link to="/stockInOut" onClick={handleMenuClick}>
+          Stock In/Out
+        </Link>
+      ),
+      icon: <RetweetOutlined style={{ fontSize: "18px" }} />,
     },
   ];
 
