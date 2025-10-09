@@ -27,7 +27,7 @@ const Title = () => {
         dispatch(removeUser());
       }
     } catch (err) {
-      console.log("Eror occurred");
+      console.log(err);
       showMessage({
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",

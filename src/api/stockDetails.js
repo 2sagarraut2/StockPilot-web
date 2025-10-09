@@ -53,7 +53,7 @@ export const addCategory = async (data) => {
 
 // update category
 export const updateCategory = async (categoryId, data) => {
-  let url = `${enviroments.dataURL}/category/update/${categoryId}}`;
+  let url = `${enviroments.dataURL}/category/update/${categoryId}`;
 
   return await axios.patch(url, data, { withCredentials: true });
 };

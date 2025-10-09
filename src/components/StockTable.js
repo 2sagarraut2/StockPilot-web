@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, Table, Tag, Tooltip } from "antd";
+import { Button, Form, Table, Tag, Tooltip } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -204,13 +204,12 @@ const StockTable = ({ stock, total, loading, pagination, setPagination }) => {
   const handleRowEditClick = (record) => {
     form.setFieldsValue({
       name: record?.product?.name,
-      description: record?.product.description,
+      description: record?.product?.description,
       category: record?.product?.category?._id,
       price: record?.product?.price,
       sku: record?.product?.sku,
     });
     setIsModalVisible(true);
-    console.log(form.getFieldsValue());
   };
 
   const handleOk = () => {

@@ -1,6 +1,10 @@
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../redux/categorySlice";
-import { addCategory, categoryData } from "../../../api/stockDetails";
+import {
+  addCategory,
+  categoryData,
+  updateCategory,
+} from "../../../api/stockDetails";
 import { addCategoryPage, setCategory } from "../../redux/categorySlice";
 import { showMessage } from "../../../components/common/CustomMessage";
 
@@ -32,23 +36,14 @@ const useCategory = () => {
 
   // TODO: add category
   const addCategoryCustomHook = async (data) => {
+    dispatch(setLoading(true));
     try {
-      dispatch(setLoading(true));
-      try {
-        const res = await addCategory(data);
+      const res = await addCategory(data);
 
-        if (res.status === 200) {
-          const limit = 10;
-          showMessage({
-            type: "success",
-            text: res?.data?.message,
-          });
-        }
-      } catch (err) {
-        console.log(err);
+      if (res.status === 200) {
         showMessage({
-          type: "error",
-          text: err?.response?.data?.error || "Something went wrong",
+          type: "success",
+          text: res?.data?.message,
         });
       }
     } catch (err) {
@@ -63,14 +58,25 @@ const useCategory = () => {
   };
 
   // TODO: update category
-  const updateCategoryCustomHook = async () => {
+  const updateCategoryCustomHook = async (id, data) => {
+    dispatch(setLoading(true));
     try {
+      const res = await updateCategory(id, data);
+
+      if (res.status === 200) {
+        showMessage({
+          type: "success",
+          text: res?.data?.message,
+        });
+      }
     } catch (err) {
       console.log(err);
       showMessage({
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",
       });
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 

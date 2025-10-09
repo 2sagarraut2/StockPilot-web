@@ -29,8 +29,6 @@ const ProductSearch = ({ searchText, setSearchText, setPagination }) => {
     const delayBounce = setTimeout(() => {
       if (searchText.trim().length > 0) {
         filterStockCustoHook(searchText);
-      } else {
-        getStocksfromCustomHook(1, 10);
       }
     }, 3000);
 

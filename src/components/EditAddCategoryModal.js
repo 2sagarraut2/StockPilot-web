@@ -21,7 +21,7 @@ const EditAddCategoryModal = ({
         variant: "solid",
       }}
     >
-      <Form form={form} layout="vertical" variant="filled" preserve={false}>
+      <Form form={form} layout="vertical" variant="filled">
         <Form.Item name="name" label="Name" required>
           <Input size="large" placeholder="Enter category name" />
         </Form.Item>

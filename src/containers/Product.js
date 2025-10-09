@@ -5,6 +5,11 @@ import CustomHeading from "../components/common/CustomHeading";
 import useStock from "../utils/hooks/stock/useStock";
 import useProduct from "../utils/hooks/product/useProduct";
 import { useState } from "react";
+import {
+  PRODUCT_MANAGEMENT_BUTTON,
+  PRODUCT_MANAGEMENT_TAGLINE,
+  PRODUCT_MANAGEMENT_TITLE,
+} from "../utils/constants";
 
 const Product = () => {
   const { displayedStocks, total, loading } = useSelector(
@@ -32,15 +37,16 @@ const Product = () => {
   return (
     <div className="p-6">
       <CustomHeading
-        title="Product Management"
-        tagLine="Manage your inventory products and stock levels."
-        buttonText="Add Product"
+        title={PRODUCT_MANAGEMENT_TITLE}
+        tagLine={PRODUCT_MANAGEMENT_TAGLINE}
+        buttonText={PRODUCT_MANAGEMENT_BUTTON}
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         handleAddProductButtonClick={handleAddProductButtonClick}
         onAdd={() => {
           setIsModalVisible(true);
         }}
+        setPagination={setPagination}
       />
       <section>
         <ProductSearch

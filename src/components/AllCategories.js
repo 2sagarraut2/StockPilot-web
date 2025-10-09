@@ -48,6 +48,7 @@ const AllCategories = ({ value, onChange }) => {
       filterOption={(input, option) =>
         option.label.toLowerCase().includes(input.toLowerCase())
       }
+      placeholder="Select category"
     />
   );
 };
