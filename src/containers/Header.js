@@ -32,46 +32,6 @@ const Header = () => {
     getStocksfromCustomHook(page, limit);
   }, []);
 
-  // const getStocks = async () => {
-  //   dispatch(setLoading(true));
-  //   try {
-  //     const res = await stockData();
-
-  //     if (res.status === 200) {
-  //       const { message, data, total } = res.data;
-
-  //       if (Array.isArray(data)) {
-  //         dispatch(
-  //           setStock({
-  //             items: data,
-  //             total,
-  //           })
-  //         );
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //     dispatch(setLoading(false));
-  //   }
-  // };
-
-  // const getCategories = async () => {
-  //   try {
-  //     dispatch(setStock({ loading: true }));
-  //     const res = await categoryData();
-
-  //     if (res.status === 200) {
-  //       const { message, data, total } = res.data;
-
-  //       if (Array.isArray(data)) {
-  //         dispatch(setCategory({ items: data, total, loading: false }));
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
   useEffect(() => {
     const limit = 10;
     const page = 1;
@@ -113,9 +73,6 @@ const Header = () => {
       >
         <LogoComponent isOpen={isOpen} setIsOpen={setIsOpen} />
 
-        {/* <div className="block md:hidden">
-          {isOpen && <Title className="hidden md:flex" />}
-        </div> */}
         <NavigationComponent isOpen={isOpen} setIsOpen={setIsOpen} />
 
         <div className={`mt-auto text-sm `}>Made with ❤️ in India</div>

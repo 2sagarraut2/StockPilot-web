@@ -1,5 +1,6 @@
 import { Form, Input, Modal } from "antd";
 import AllCategories from "./AllCategories";
+import PropTypes from "prop-types";
 const { TextArea } = Input;
 
 const EditAddProductModal = ({
@@ -41,6 +42,14 @@ const EditAddProductModal = ({
       </Form>
     </Modal>
   );
+};
+
+EditAddProductModal.prototype = {
+  title: PropTypes.string.isRequired,
+  isModalVisible: PropTypes.bool.isRequired,
+  handleOk: PropTypes.func.isRequired,
+  handleCancel: PropTypes.func.isRequired,
+  form: PropTypes.object.isRequired,
 };
 
 export default EditAddProductModal;

@@ -1,5 +1,7 @@
 import { TITLE } from "../utils/constants";
 import { Link } from "react-router-dom";
+import propTypes from "prop-types";
+import PropTypes from "prop-types";
 
 const LogoComponent = ({ isOpen, setIsOpen }) => {
   const handleMenuClick = () => {
@@ -34,6 +36,11 @@ const LogoComponent = ({ isOpen, setIsOpen }) => {
       </div>
     </Link>
   );
+};
+
+LogoComponent.propTypes = {
+  isOpen: propTypes.bool,
+  setIsOpen: PropTypes.func,
 };
 
 export default LogoComponent;

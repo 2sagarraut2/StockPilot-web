@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import React from "react";
+import PropTypes from "prop-types";
 
 const DeleteProductModal = ({
   title,
@@ -29,6 +29,16 @@ const DeleteProductModal = ({
       </Modal>
     </>
   );
+};
+
+DeleteProductModal.propTypes = {
+  title: PropTypes.string.isRequired,
+  openDeleteModal: PropTypes.bool.isRequired,
+  handleDeleteOk: PropTypes.func,
+  confirmLoadingDeleteModal: PropTypes.bool,
+  handleCancelDeleteModal: PropTypes.func,
+  modalText: PropTypes.string.isRequired,
+  productName: PropTypes.string,
 };
 
 export default DeleteProductModal;

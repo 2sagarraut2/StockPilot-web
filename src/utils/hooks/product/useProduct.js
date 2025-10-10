@@ -1,6 +1,11 @@
 import { useDispatch } from "react-redux";
 import { showMessage } from "../../../components/common/CustomMessage";
-import { addProduct, deleteProduct } from "../../../api/stockDetails";
+import {
+  addProduct,
+  deleteProduct,
+  updateProduct,
+} from "../../../api/stockDetails";
+import { setLoading } from "../../redux/productSlice";
 
 const useProduct = () => {
   const dispatch = useDispatch();
@@ -13,34 +18,61 @@ const useProduct = () => {
 
   //   TODO: add products
   const addProductCustomHook = async (data) => {
+    dispatch(setLoading(true));
     try {
-      try {
-        const res = await addProduct(data);
+      const res = await addProduct(data);
 
-        if (res.status === 200) {
-          showMessage({
-            type: "success",
-            text: res?.data?.message,
-          });
-        }
-      } catch (err) {
-        console.log(err);
+      if (res.status === 200) {
         showMessage({
-          type: "error",
-          text: err?.response?.data?.error || "Something went wrong",
+          type: "success",
+          text: res?.data?.message,
         });
+
+        return true;
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+
+      return false;
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   //   TODO: update products
-  const updateProductCustomHook = async () => {
+  const updateProductCustomHook = async (productId, data) => {
+    dispatch(setLoading(true));
     try {
-    } catch (err) {}
+      const res = await updateProduct(productId, data);
+
+      if (res.status === 200) {
+        showMessage({
+          type: "success",
+          text: res?.data?.message,
+        });
+
+        return true;
+      }
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        type: "error",
+        text: err?.response?.data?.error || "Something went wrong",
+      });
+
+      return false;
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   // TODO:  delete products
   const deleteProductCustomHook = async (productId) => {
+    dispatch(setLoading(true));
     try {
       const res = await deleteProduct(productId);
 
@@ -49,6 +81,8 @@ const useProduct = () => {
           type: "success",
           text: res?.data?.message,
         });
+
+        return true;
       }
     } catch (err) {
       console.log(err);
@@ -56,7 +90,10 @@ const useProduct = () => {
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",
       });
+
+      return false;
     }
+    dispatch(setLoading(false));
   };
 
   return {

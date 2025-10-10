@@ -10,11 +10,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useStock from "../utils/hooks/stock/useStock";
 import { Grid } from "antd";
-import EditAddProductModal from "./EditAddProductModal";
 import ProductCardData from "./ProductCardData";
 import DeleteProductModal from "./DeleteProductModal";
 import useProduct from "../utils/hooks/product/useProduct";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 const { useBreakpoint } = Grid;
 
 const getStockStatus = (quantity) => {
@@ -47,8 +47,17 @@ const getStockStatus = (quantity) => {
   );
 };
 
-const StockTable = ({ stock, total, loading, pagination, setPagination }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+const StockTable = ({
+  stock,
+  total,
+  loading,
+  pagination,
+  setPagination,
+  form,
+  setIsModalVisible,
+  setModalTitle,
+  setEditingProduct,
+}) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [confirmLoadingDeleteModal, setConfirmLoadingDelete] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -124,11 +133,8 @@ const StockTable = ({ stock, total, loading, pagination, setPagination }) => {
 
   const dispatch = useDispatch();
 
-  const [form] = Form.useForm();
-
   const handleTableChange = (pag) => {
     setPagination(pag); // Update current page and pageSize
-    // fetchData(pag.current, pag.pageSize);
     getStocksfromCustomHook(pag.current, pag.pageSize);
   };
 
@@ -210,14 +216,8 @@ const StockTable = ({ stock, total, loading, pagination, setPagination }) => {
       sku: record?.product?.sku,
     });
     setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form.resetFields();
+    setModalTitle("Edit Product");
+    setEditingProduct(record);
   };
 
   const handleRowDeleteClick = (record) => {
@@ -225,18 +225,25 @@ const StockTable = ({ stock, total, loading, pagination, setPagination }) => {
     setOpenDeleteModal(true);
   };
 
-  const handleDeleteOk = () => {
-    setConfirmLoadingDelete(true);
-    deleteProductCustomHook(productToDelete?.product?._id);
-    setOpenDeleteModal(false);
-    setConfirmLoadingDelete(false);
-    const current = 1;
-    const limit = 10;
-    getStocksfromCustomHook(current, limit);
-    setPagination((prev) => ({
-      ...prev,
-      current,
-    }));
+  const handleDeleteOk = async () => {
+    try {
+      setConfirmLoadingDelete(true);
+      const res = await deleteProductCustomHook(productToDelete?.product?._id);
+
+      if (res) {
+        const current = 1;
+        const limit = 10;
+        await getStocksfromCustomHook(current, limit);
+        setPagination((prev) => ({
+          ...prev,
+          current,
+        }));
+      }
+    } catch (err) {
+    } finally {
+      setOpenDeleteModal(false);
+      setConfirmLoadingDelete(false);
+    }
   };
 
   const handleCancelDeleteModal = () => {
@@ -284,41 +291,6 @@ const StockTable = ({ stock, total, loading, pagination, setPagination }) => {
             scroll={{ y: 480 }}
           />
 
-          {/* <Modal
-            title="Edit Product"
-            open={isModalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            okText="Update Product"
-            cancelText="Cancel"
-          >
-            <Form form={form} layout="vertical" variant="filled">
-              <Form.Item name="name" label="Name" required>
-                <Input size="large" />
-              </Form.Item>
-              <Form.Item name="description" label="Description" required>
-                <Input size="large" />
-              </Form.Item>
-              <Form.Item name="category" label="Category" required>
-                <Input size="large" />
-              </Form.Item>
-              <Form.Item name="price" label="Price (₹)" required>
-                <Input type="number" />
-              </Form.Item>
-              <Form.Item name="sku" label="SKU" required>
-                <Input size="large" />
-              </Form.Item>
-            </Form>
-          </Modal> */}
-
-          <EditAddProductModal
-            title="Edit Product"
-            isModalVisible={isModalVisible}
-            handleOk={handleOk}
-            handleCancel={handleCancel}
-            form={form}
-          />
-
           <DeleteProductModal
             openDeleteModal={openDeleteModal}
             handleDeleteOk={handleDeleteOk}
@@ -332,6 +304,18 @@ const StockTable = ({ stock, total, loading, pagination, setPagination }) => {
       )}
     </>
   );
+};
+
+StockTable.propTypes = {
+  stock: PropTypes.array.isRequired,
+  total: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  pagination: PropTypes.object.isRequired,
+  setPagination: PropTypes.func.isRequired,
+  form: PropTypes.object.isRequired,
+  setIsModalVisible: PropTypes.func.isRequired,
+  setModalTitle: PropTypes.func.isRequired,
+  setEditingProduct: PropTypes.func.isRequired,
 };
 
 export default StockTable;

@@ -34,7 +34,7 @@ export const addProduct = async (data) => {
 export const updateProduct = async (productId, data) => {
   let url = `${enviroments.dataURL}/product/update/${productId}`;
 
-  return await axios.post(url, data, { withCredentials });
+  return await axios.patch(url, data, { withCredentials: true });
 };
 
 // delete product

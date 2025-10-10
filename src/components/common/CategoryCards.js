@@ -1,8 +1,10 @@
+import PropTypes from "prop-types";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Form, Tooltip, Typography } from "antd";
+import { Card, Col, Tooltip, Typography } from "antd";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import EditAddCategoryModal from "../EditAddCategoryModal";
+import { USER_ROLES, TOOLTIP_TEXT, COLORS } from "../../utils/constants";
+import React from "react";
 
 const { Title } = Typography;
 
@@ -12,19 +14,44 @@ const CategoryCards = ({
   form,
   setIsModalVisible,
   setEditingCategory,
+  setModalTitle,
 }) => {
   const userRole = useSelector((store) => store.user.user.role.label);
-  const isAdmin = userRole === "admin";
+  const isAdmin = userRole === USER_ROLES.ADMIN;
 
   const activeStyle = {
-    color: "blue",
+    color: COLORS.ACTIVE,
     cursor: "pointer",
   };
 
   const disabledStyle = {
-    color: "gray",
+    color: COLORS.DISABLED,
     cursor: "not-allowed",
     opacity: 0.5,
+  };
+
+  const handleEditClick = (e) => {
+    if (!isAdmin) {
+      e.stopPropagation(); // prevent any parent click
+      return;
+    }
+    // perform edit action here
+    setIsModalVisible(true);
+    setModalTitle("Edit Category");
+    form.setFieldsValue({
+      name: category?.name,
+      description: category?.description,
+    });
+    setEditingCategory(category);
+  };
+
+  const handleDeleteClick = (e) => {
+    if (!isAdmin) {
+      e.stopPropagation();
+      return;
+    }
+    // perform delete action here
+    console.log("Delete clicked");
   };
 
   const actions = [
@@ -35,48 +62,38 @@ const CategoryCards = ({
           justifyItems: "baseline",
           fontWeight: "normal",
           margin: 0,
+          paddingInline: "8px",
         }}
       >
         Created: 01/01/2024
       </Title>
     </div>,
-    <span className="flex gap-8 justify-center">
+    <div className="flex flex-wrap gap-8 justify-center px-2">
       <Tooltip title={isAdmin ? "Edit Category" : "Only admins can edit"}>
         <EditOutlined
+          aria-label="Edit category"
           key="edit"
           className="hover:cursor-pointer border p-2 border-gray-300 rounded-sm hover:bg-gray-200"
           style={isAdmin ? activeStyle : disabledStyle}
-          onClick={(e) => {
-            if (!isAdmin) {
-              e.stopPropagation(); // prevent any parent click
-              return;
-            }
-            // perform edit action here
-            setIsModalVisible(true);
-            form.setFieldsValue({
-              name: category?.name,
-              description: category?.description,
-            });
-            setEditingCategory(category);
-          }}
+          onClick={handleEditClick}
         />
       </Tooltip>
-      <Tooltip title={isAdmin ? "Delete Category" : "Only admins can delete"}>
+      <Tooltip
+        title={
+          isAdmin
+            ? TOOLTIP_TEXT.DELETE_CATEGORY
+            : TOOLTIP_TEXT.ONLY_ADMIN_DELETE
+        }
+      >
         <DeleteOutlined
+          aria-label="Delete category"
           key="delete"
           className="hover:cursor-pointer border p-2 border-gray-300 rounded-sm hover:bg-gray-200"
           style={isAdmin ? activeStyle : disabledStyle}
-          onClick={(e) => {
-            if (!isAdmin) {
-              e.stopPropagation();
-              return;
-            }
-            // perform delete action here
-            console.log("Delete clicked");
-          }}
+          onClick={handleDeleteClick}
         />
       </Tooltip>
-    </span>,
+    </div>,
   ];
 
   return (
@@ -131,4 +148,16 @@ const CategoryCards = ({
   );
 };
 
-export default CategoryCards;
+CategoryCards.propTypes = {
+  category: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
+  }).isRequired,
+  loading: PropTypes.bool,
+  form: PropTypes.object.isRequired,
+  setIsModalVisible: PropTypes.func.isRequired,
+  setEditingCategory: PropTypes.func.isRequired,
+};
+
+export default React.memo(CategoryCards);

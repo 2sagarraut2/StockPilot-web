@@ -30,6 +30,7 @@ const useStock = () => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
       dispatch(setLoading(false));
     }
   };
@@ -54,6 +55,7 @@ const useStock = () => {
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",
       });
+    } finally {
       dispatch(setLoading(false));
     }
   };
@@ -69,6 +71,7 @@ const useStock = () => {
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",
       });
+    } finally {
       dispatch(setLoading(false));
     }
   };

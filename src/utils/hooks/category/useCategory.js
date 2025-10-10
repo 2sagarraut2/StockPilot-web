@@ -45,6 +45,8 @@ const useCategory = () => {
           type: "success",
           text: res?.data?.message,
         });
+
+        return true;
       }
     } catch (err) {
       console.log(err);
@@ -68,6 +70,8 @@ const useCategory = () => {
           type: "success",
           text: res?.data?.message,
         });
+
+        return true;
       }
     } catch (err) {
       console.log(err);

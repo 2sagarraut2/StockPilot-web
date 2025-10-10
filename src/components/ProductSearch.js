@@ -1,29 +1,15 @@
 import { Input, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { searchProductData } from "../api/stockDetails";
-import {
-  filterStocks,
-  resetFilter,
-  setLoading,
-} from "../utils/redux/stockSlice";
+import { resetFilter } from "../utils/redux/stockSlice";
 import { useEffect, useState } from "react";
 import AllCategories from "./AllCategories";
 import useStock from "../utils/hooks/stock/useStock";
+import PropTypes from "prop-types";
 
 const ProductSearch = ({ searchText, setSearchText, setPagination }) => {
-  const categoryValues = useSelector((store) => store.category.items);
   const { getStocksfromCustomHook, filterStockCustoHook } = useStock();
   const dispatch = useDispatch();
-
-  const options = categoryValues.map((item) => ({
-    value: item._id,
-    label: item.name,
-  }));
-
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
 
   useEffect(() => {
     const delayBounce = setTimeout(() => {
@@ -34,25 +20,6 @@ const ProductSearch = ({ searchText, setSearchText, setPagination }) => {
 
     return () => clearTimeout(delayBounce);
   }, [searchText]);
-
-  // const getSearchresults = async (query) => {
-  //   dispatch(setLoading(true));
-  //   try {
-  //     const res = await searchProductData(searchText);
-
-  //     if (res.status === 200) {
-  //       const { message, data, total } = res.data;
-
-  //       if (Array.isArray(data)) {
-  //         // create a separate reducer for searchData
-  //         dispatch(filterStocks({ items: data, total }));
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //     dispatch(setLoading(false));
-  //   }
-  // };
 
   const handlSearchClear = () => {
     dispatch(resetFilter());
@@ -81,18 +48,15 @@ const ProductSearch = ({ searchText, setSearchText, setPagination }) => {
           onClear={handlSearchClear}
         />
       </div>
-      {/* <div>
-        <Select
-          defaultValue="All"
-          style={{ width: 120 }}
-          onChange={handleChange}
-          variant="filled"
-          options={options}
-        />
-      </div> */}
       <AllCategories />
     </div>
   );
+};
+
+ProductSearch.propTypes = {
+  searchText: PropTypes.string.isRequired,
+  setSearchText: PropTypes.func.isRequired,
+  setPagination: PropTypes.func.isRequired,
 };
 
 export default ProductSearch;

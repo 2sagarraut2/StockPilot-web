@@ -7,6 +7,7 @@ import {
   SwapOutlined,
   TagsOutlined,
 } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
 const NavigationComponent = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
@@ -65,6 +66,11 @@ const NavigationComponent = ({ isOpen, setIsOpen }) => {
       />
     </div>
   );
+};
+
+NavigationComponent.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 export default NavigationComponent;

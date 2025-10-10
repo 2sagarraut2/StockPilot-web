@@ -22,6 +22,7 @@ const Category = () => {
 
   const [page, setPage] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("Edit Category");
   const [editingCategory, setEditingCategory] = useState(null);
 
   const [form] = Form.useForm();
@@ -30,13 +31,17 @@ const Category = () => {
     setIsModalVisible(false);
 
     if (editingCategory) {
-      const id = editingCategory._id;
+      const id = editingCategory?._id;
       const data = form.getFieldsValue();
-      await handleEditCategory(id, data);
+
+      // calling edit category hook
+      handleEditCategory(id, data);
       setEditingCategory(null);
     } else {
       const data = form.getFieldsValue();
-      await handleAddCategory(data);
+
+      // calling add category hook
+      handleAddCategory(data);
     }
 
     form.resetFields();
@@ -54,17 +59,26 @@ const Category = () => {
   };
 
   const handleAddCategory = async (data) => {
-    const limit = 10;
-    addCategoryCustomHook(data);
-    setPage(1);
-    getCategoriesFromCustomHook(1, limit);
+    try {
+      const res = await addCategoryCustomHook(data);
+      if (res) {
+        const limit = 10;
+        setPage(1);
+        getCategoriesFromCustomHook(1, limit);
+      }
+    } catch (err) {}
   };
 
   const handleEditCategory = async (id, data) => {
-    const limit = 10;
-    await updateCategoryCustomHook(id, data);
-    setPage(1);
-    await getCategoriesFromCustomHook(1, limit);
+    try {
+      const res = await updateCategoryCustomHook(id, data);
+
+      if (res) {
+        const limit = 10;
+        setPage(1);
+        await getCategoriesFromCustomHook(1, limit);
+      }
+    } catch (err) {}
   };
 
   return (
@@ -75,10 +89,11 @@ const Category = () => {
         buttonText={CATEGORY_MANAGEMENT_BUTTON}
         isProduct="false"
         handleAddCategory={handleAddCategory}
-        isModalVisible={isModalVisible}
+        setModalTitle={setModalTitle}
         setIsModalVisible={setIsModalVisible}
         onAdd={() => {
           setIsModalVisible(true);
+          setModalTitle("Add Category");
         }}
       />
       <Row gutter={[16, 16]} style={{ marginBottom: "4%" }}>
@@ -93,6 +108,7 @@ const Category = () => {
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
                 setEditingCategory={setEditingCategory}
+                setModalTitle={setModalTitle}
               />
             );
           })}
@@ -110,7 +126,7 @@ const Category = () => {
         )}
       </div>
       <EditAddCategoryModal
-        title="Add Category"
+        title={modalTitle}
         isModalVisible={isModalVisible}
         handleOk={handleOk}
         handleCancel={handleCancel}

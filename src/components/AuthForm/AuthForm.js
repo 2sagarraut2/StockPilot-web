@@ -3,6 +3,7 @@ import InputField from "./InputField";
 import PasswordField from "./PasswordField";
 import { useAuth } from "../../utils/hooks/auth/useAuth";
 import { Button, Divider } from "antd";
+import { DEMO_ACCOUNT } from "../../utils/constants";
 
 export default function AuthForm({ mode = "login" }) {
   const {
@@ -71,7 +72,7 @@ export default function AuthForm({ mode = "login" }) {
               </svg>
             }
           >
-            Try Demo Account
+            {DEMO_ACCOUNT}
           </Button>
         </div>
         <Divider>OR</Divider>

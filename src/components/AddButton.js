@@ -1,5 +1,6 @@
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
 const AddButton = ({ handleButtonClick, buttonText }) => {
   return (
@@ -14,6 +15,11 @@ const AddButton = ({ handleButtonClick, buttonText }) => {
       </Button>
     </div>
   );
+};
+
+AddButton.prototype = {
+  handleButtonClick: PropTypes.func.isRequired,
+  buttonText: PropTypes.string.isRequired,
 };
 
 export default AddButton;

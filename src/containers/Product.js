@@ -10,6 +10,8 @@ import {
   PRODUCT_MANAGEMENT_TAGLINE,
   PRODUCT_MANAGEMENT_TITLE,
 } from "../utils/constants";
+import EditAddProductModal from "../components/EditAddProductModal";
+import { Form } from "antd";
 
 const Product = () => {
   const { displayedStocks, total, loading } = useSelector(
@@ -22,16 +24,59 @@ const Product = () => {
     pageSize: 10,
   });
 
+  const [form] = Form.useForm();
+
   const dispatch = useDispatch();
   const { getStocksfromCustomHook } = useStock();
 
-  const { addProductCustomHook } = useProduct();
+  const { addProductCustomHook, updateProductCustomHook } = useProduct();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("Edit Category");
+  const [editingProduct, setEditingProduct] = useState(null);
 
-  const handleAddProductButtonClick = async (data) => {
-    addProductCustomHook(data);
-    getStocksfromCustomHook(1, 10);
+  const handleOk = async () => {
+    try {
+      if (editingProduct) {
+        // Editing product
+        const id = editingProduct.product._id;
+        const data = form.getFieldsValue();
+
+        // calling update products hook
+        const res = await updateProductCustomHook(id, data);
+
+        // checking before calling this
+        if (res) {
+          const page = 1;
+          const limit = 10;
+          getStocksfromCustomHook(1, 10);
+        }
+      } else {
+        // adding product
+        const data = form.getFieldsValue();
+
+        // calling add product hook
+        const res = await addProductCustomHook(data);
+
+        // checking before calling this
+        if (res) {
+          const page = 1;
+          const limit = 10;
+          getStocksfromCustomHook(1, 10);
+        }
+      }
+    } catch (err) {
+    } finally {
+      setIsModalVisible(false);
+      setEditingProduct(null);
+      form.resetFields();
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    form.resetFields();
+    setEditingProduct(null);
   };
 
   return (
@@ -42,9 +87,10 @@ const Product = () => {
         buttonText={PRODUCT_MANAGEMENT_BUTTON}
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
-        handleAddProductButtonClick={handleAddProductButtonClick}
+        setModalTitle={setModalTitle}
         onAdd={() => {
           setIsModalVisible(true);
+          setModalTitle("Add Product");
         }}
         setPagination={setPagination}
       />
@@ -62,8 +108,19 @@ const Product = () => {
           loading={loading}
           pagination={pagination}
           setPagination={setPagination}
+          form={form}
+          setIsModalVisible={setIsModalVisible}
+          setModalTitle={setModalTitle}
+          setEditingProduct={setEditingProduct}
         />
       </div>
+      <EditAddProductModal
+        title={modalTitle}
+        isModalVisible={isModalVisible}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        form={form}
+      />
     </div>
   );
 };

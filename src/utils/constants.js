@@ -15,3 +15,19 @@ export const PRODUCT_MANAGEMENT_BUTTON = "Add Product";
 export const CATEGORY_MANAGEMENT_TITLE = "Category Management";
 export const CATEGORY_MANAGEMENT_TAGLINE = "Manage your inventory categories";
 export const CATEGORY_MANAGEMENT_BUTTON = "Add Category";
+export const DEMO_ACCOUNT = "Try Demo Account";
+export const USER_ROLES = {
+  ADMIN: "admin",
+  READER: "reader",
+};
+export const TOOLTIP_TEXT = {
+  EDIT_CATEGORY: "Edit Category",
+  DELETE_CATEGORY: "Delete Category",
+  ONLY_ADMIN_EDIT: "Only admins can edit",
+  ONLY_ADMIN_DELETE: "Only admins can delete",
+};
+
+export const COLORS = {
+  ACTIVE: "blue",
+  DISABLED: "gray",
+};

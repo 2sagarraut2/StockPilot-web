@@ -1,4 +1,5 @@
 import { Card } from "antd";
+import PropTypes from "prop-types";
 
 const DataCard = ({ title, quantity, description, icon, loading }) => {
   return (
@@ -21,6 +22,14 @@ const DataCard = ({ title, quantity, description, icon, loading }) => {
       />
     </Card>
   );
+};
+
+DataCard.prototype = {
+  title: PropTypes.string.isRequired,
+  quantity: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  icon: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default DataCard;
