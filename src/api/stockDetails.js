@@ -62,5 +62,5 @@ export const updateCategory = async (categoryId, data) => {
 export const deleteCategory = async (categoryId) => {
   let url = `${enviroments.dataURL}/category/delete/${categoryId}`;
 
-  return await axios.delete(url, withCredentials);
+  return await axios.delete(url, { withCredentials: true });
 };

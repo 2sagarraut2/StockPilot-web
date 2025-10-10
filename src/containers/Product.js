@@ -49,6 +49,10 @@ const Product = () => {
         if (res) {
           const page = 1;
           const limit = 10;
+          setPagination({
+            current: 1,
+            pageSize: 10,
+          });
           getStocksfromCustomHook(1, 10);
         }
       } else {
@@ -62,6 +66,10 @@ const Product = () => {
         if (res) {
           const page = 1;
           const limit = 10;
+          setPagination({
+            current: 1,
+            pageSize: 10,
+          });
           getStocksfromCustomHook(1, 10);
         }
       }

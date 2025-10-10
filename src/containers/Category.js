@@ -6,10 +6,15 @@ import {
   CATEGORY_MANAGEMENT_BUTTON,
   CATEGORY_MANAGEMENT_TAGLINE,
   CATEGORY_MANAGEMENT_TITLE,
+  COLORS,
 } from "../utils/constants";
 import { useState } from "react";
 import useCategory from "../utils/hooks/category/useCategory";
 import EditAddCategoryModal from "../components/EditAddCategoryModal";
+import PropTypes from "prop-types";
+import React from "react";
+import React from "react";
+import DeleteProductModal from "../components/DeleteProductModal";
 
 const Category = () => {
   const { items, loading, total } = useSelector((store) => store.category);
@@ -17,13 +22,17 @@ const Category = () => {
     getCategoriesFromCustomHook,
     addCategoryCustomHook,
     updateCategoryCustomHook,
+    deleteCategoryCustomHook,
   } = useCategory();
-  const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState("Edit Category");
   const [editingCategory, setEditingCategory] = useState(null);
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [confirmLoadingDeleteModal, setConfirmLoadingDelete] = useState(false);
+  const [deletingCategory, setDeletingCategory] = useState(null);
 
   const [form] = Form.useForm();
 
@@ -62,9 +71,10 @@ const Category = () => {
     try {
       const res = await addCategoryCustomHook(data);
       if (res) {
+        const page = 1;
         const limit = 10;
         setPage(1);
-        getCategoriesFromCustomHook(1, limit);
+        getCategoriesFromCustomHook(page, limit);
       }
     } catch (err) {}
   };
@@ -74,11 +84,38 @@ const Category = () => {
       const res = await updateCategoryCustomHook(id, data);
 
       if (res) {
+        const page = 1;
         const limit = 10;
         setPage(1);
-        await getCategoriesFromCustomHook(1, limit);
+        await getCategoriesFromCustomHook(page, limit);
       }
     } catch (err) {}
+  };
+
+  // Delete modal methods
+  const handleDeleteOk = async () => {
+    try {
+      setConfirmLoadingDelete(true);
+
+      // TODO: Add category id
+      const res = await deleteCategoryCustomHook(deletingCategory._id);
+
+      if (res) {
+        const page = 1;
+        const limit = 10;
+        setPage(1);
+        await getCategoriesFromCustomHook(page, limit);
+      }
+    } catch (err) {
+    } finally {
+      setOpenDeleteModal(false);
+      setConfirmLoadingDelete(false);
+    }
+  };
+
+  const handleCancelDeleteModal = () => {
+    console.log("handleCancelDeleteModal");
+    setOpenDeleteModal(false);
   };
 
   return (
@@ -96,7 +133,7 @@ const Category = () => {
           setModalTitle("Add Category");
         }}
       />
-      <Row gutter={[16, 16]} style={{ marginBottom: "4%" }}>
+      <Row gutter={[16, 16]} style={{ marginBottom: "2%" }}>
         {items &&
           items.map((category) => {
             return (
@@ -109,6 +146,11 @@ const Category = () => {
                 setIsModalVisible={setIsModalVisible}
                 setEditingCategory={setEditingCategory}
                 setModalTitle={setModalTitle}
+                handleDeleteOk={handleDeleteOk}
+                handleCancelDeleteModal={handleCancelDeleteModal}
+                setOpenDeleteModal={setOpenDeleteModal}
+                setConfirmLoadingDelete={setConfirmLoadingDelete}
+                setDeletingCategory={setDeletingCategory}
               />
             );
           })}
@@ -131,6 +173,16 @@ const Category = () => {
         handleOk={handleOk}
         handleCancel={handleCancel}
         form={form}
+      />
+
+      <DeleteProductModal
+        openDeleteModal={openDeleteModal}
+        handleDeleteOk={handleDeleteOk}
+        confirmLoadingDeleteModal={confirmLoadingDeleteModal}
+        handleCancelDeleteModal={handleCancelDeleteModal}
+        title="Delete Category"
+        modalText="Are you sure want to delete"
+        productName={deletingCategory?.name}
       />
     </div>
   );

@@ -4,7 +4,9 @@ import { Card, Col, Tooltip, Typography } from "antd";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { USER_ROLES, TOOLTIP_TEXT, COLORS } from "../../utils/constants";
-import React from "react";
+import React, { useState } from "react";
+import useCategory from "../../utils/hooks/category/useCategory";
+import DeleteProductModal from "../DeleteProductModal";
 
 const { Title } = Typography;
 
@@ -15,6 +17,8 @@ const CategoryCards = ({
   setIsModalVisible,
   setEditingCategory,
   setModalTitle,
+  setOpenDeleteModal,
+  setDeletingCategory,
 }) => {
   const userRole = useSelector((store) => store.user.user.role.label);
   const isAdmin = userRole === USER_ROLES.ADMIN;
@@ -45,13 +49,14 @@ const CategoryCards = ({
     setEditingCategory(category);
   };
 
-  const handleDeleteClick = (e) => {
+  const handleDeleteClick = async (e) => {
     if (!isAdmin) {
       e.stopPropagation();
       return;
     }
     // perform delete action here
-    console.log("Delete clicked");
+    setDeletingCategory(category);
+    setOpenDeleteModal(true);
   };
 
   const actions = [
@@ -158,6 +163,9 @@ CategoryCards.propTypes = {
   form: PropTypes.object.isRequired,
   setIsModalVisible: PropTypes.func.isRequired,
   setEditingCategory: PropTypes.func.isRequired,
+  setModalTitle: PropTypes.func.isRequired,
+  setOpenDeleteModal: PropTypes.func.isRequired,
+  setDeletingCategory: PropTypes.func.isRequired,
 };
 
 export default React.memo(CategoryCards);

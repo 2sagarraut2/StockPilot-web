@@ -90,13 +90,13 @@ Inspired by real-world stock & inventory management challenges.
   - Add extra features to Dashboard
   - Implement sorting for products on basis of category
   - Fix allcategories drown on Edit Product page to remove All Option / Add All Option on Product page dropdown
-  - Implement Delete Category API
   - StockInOut should show original quantity and price and total price, remaining quantity and price
   - Product table should show history of stock
   - Add filters - Date, Product, Price on product and stock page
   - product hisotry page
   - stock history page
   - Add validations for add/Edit pages
+  - add category load button style
 
 1. iphone - 10
 2. Sell - 10

@@ -3,6 +3,7 @@ import { setLoading } from "../../redux/categorySlice";
 import {
   addCategory,
   categoryData,
+  deleteCategory,
   updateCategory,
 } from "../../../api/stockDetails";
 import { addCategoryPage, setCategory } from "../../redux/categorySlice";
@@ -85,14 +86,25 @@ const useCategory = () => {
   };
 
   // TODO: delete category
-  const deleteCategoryCustomHook = async () => {
+  const deleteCategoryCustomHook = async (categoryId) => {
     try {
+      const res = await deleteCategory(categoryId);
+
+      if (res.status === 200) {
+        showMessage({
+          type: "success",
+          text: res?.data?.message,
+        });
+
+        return true;
+      }
     } catch (err) {
       console.log(err);
       showMessage({
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",
       });
+      return false;
     }
   };
 
