@@ -20,6 +20,7 @@ const Category = () => {
   const { items, loading, total } = useSelector((store) => store.category);
   const {
     getCategoriesFromCustomHook,
+    getCategoriesNextPageFromCustomHook,
     addCategoryCustomHook,
     updateCategoryCustomHook,
     deleteCategoryCustomHook,
@@ -62,9 +63,11 @@ const Category = () => {
   };
 
   const handleLoadMore = () => {
-    setPage((prev) => prev + 1);
     const limit = 10;
-    getCategoriesFromCustomHook(page + 1, limit);
+    const res = getCategoriesNextPageFromCustomHook(page + 1, limit);
+    if (res) {
+      setPage((prev) => prev + 1);
+    }
   };
 
   const handleAddCategory = async (data) => {
@@ -97,7 +100,6 @@ const Category = () => {
     try {
       setConfirmLoadingDelete(true);
 
-      // TODO: Add category id
       const res = await deleteCategoryCustomHook(deletingCategory._id);
 
       if (res) {

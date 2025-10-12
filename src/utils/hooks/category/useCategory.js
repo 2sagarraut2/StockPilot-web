@@ -21,15 +21,35 @@ const useCategory = () => {
         const { message, data, total } = res.data;
 
         if (Array.isArray(data)) {
-          if (page === 1) {
-            dispatch(setCategory({ items: data, total, loading: false }));
-          } else {
-            dispatch(addCategoryPage({ items: data, total }));
-          }
+          dispatch(setCategory({ items: data, total, loading: false }));
+
+          return true;
         }
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const getCategoriesNextPageFromCustomHook = async (page, limit) => {
+    dispatch(setLoading(true));
+    try {
+      const res = await categoryData(page, limit);
+
+      if (res.status === 200) {
+        const { message, data, total } = res.data;
+
+        if (Array.isArray(data)) {
+          dispatch(addCategoryPage({ items: data, total }));
+
+          return true;
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      return false;
     } finally {
       dispatch(setLoading(false));
     }
@@ -55,6 +75,7 @@ const useCategory = () => {
         type: "error",
         text: err?.response?.data?.error || "Something went wrong",
       });
+      return false;
     } finally {
       dispatch(setLoading(false));
     }
@@ -110,6 +131,7 @@ const useCategory = () => {
 
   return {
     getCategoriesFromCustomHook,
+    getCategoriesNextPageFromCustomHook,
     addCategoryCustomHook,
     updateCategoryCustomHook,
     deleteCategoryCustomHook,

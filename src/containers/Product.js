@@ -12,6 +12,7 @@ import {
 } from "../utils/constants";
 import EditAddProductModal from "../components/EditAddProductModal";
 import { Form } from "antd";
+import { current } from "@reduxjs/toolkit";
 
 const Product = () => {
   const { displayedStocks, total, loading } = useSelector(
@@ -47,13 +48,14 @@ const Product = () => {
 
         // checking before calling this
         if (res) {
-          const page = 1;
-          const limit = 10;
-          setPagination({
-            current: 1,
-            pageSize: 10,
-          });
-          getStocksfromCustomHook(1, 10);
+          const page = pagination.current;
+          const limit = pagination.pageSize;
+          // setPagination({
+          //   current: 1,
+          //   pageSize: 10,
+          // });
+          console.log("editingProduct");
+          getStocksfromCustomHook(page, limit);
         }
       } else {
         // adding product
@@ -64,13 +66,14 @@ const Product = () => {
 
         // checking before calling this
         if (res) {
-          const page = 1;
-          const limit = 10;
-          setPagination({
-            current: 1,
-            pageSize: 10,
-          });
-          getStocksfromCustomHook(1, 10);
+          const page = pagination.current + 1;
+          const limit = pagination.pageSize;
+          // setPagination({
+          //   current: 1,
+          //   pageSize: 10,
+          // });
+          getStocksfromCustomHook(page, limit);
+          setPagination((prev) => ({ ...prev, current: page }));
         }
       }
     } catch (err) {

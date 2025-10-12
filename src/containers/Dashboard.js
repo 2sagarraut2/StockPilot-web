@@ -7,7 +7,7 @@ import {
   ACTIVE_CATEGORIES,
   TOTAL_PRODUCTS,
   PRODCUTS_ACROSS_ALL,
-  AVERAGE_PER_CATEGORY,
+  CATEGORIES,
   PRODUCT_PER_CATEGORY,
 } from "../utils/constants";
 import { AppstoreOutlined } from "@ant-design/icons";
@@ -15,6 +15,7 @@ import CustomHeading from "../components/common/CustomHeading";
 
 const Dashboard = () => {
   const totalProducts = useSelector((store) => store.stock.total);
+  const totalCategories = useSelector((store) => store.category.total);
   const productLoading = useSelector((store) => store.stock.loading);
   const username = useSelector((store) => store.user.user.firstName);
   const { loading, total } = useSelector((store) => store.category);
@@ -25,7 +26,7 @@ const Dashboard = () => {
         <CustomHeading title={`Welcome ${username},`} />
       </section>
       <Row gutter={[16, 16]} style={{ marginBottom: "4%" }}>
-        <Col xs={24} sm={12} md={8}>
+        <Col xs={24} sm={12} md={6}>
           <DataCard
             title={TOTAL_CATEGORIES}
             quantity={total}
@@ -44,7 +45,7 @@ const Dashboard = () => {
             }
           />
         </Col>
-        <Col xs={24} sm={12} md={8}>
+        <Col xs={24} sm={12} md={6}>
           <DataCard
             title={TOTAL_PRODUCTS}
             quantity={totalProducts}
@@ -63,11 +64,11 @@ const Dashboard = () => {
             }
           />
         </Col>
-        <Col xs={24} sm={12} md={8}>
+        <Col xs={24} sm={12} md={6}>
           <DataCard
-            title={AVERAGE_PER_CATEGORY}
-            quantity={Math.floor(totalProducts / total) || 0}
-            description={PRODUCT_PER_CATEGORY}
+            title="Total value"
+            quantity={0}
+            description="Total product value"
             loading={productLoading || loading}
             icon={
               <AppstoreOutlined

@@ -4,7 +4,7 @@ export const TOTAL_CATEGORIES = "Total Categories";
 export const ACTIVE_CATEGORIES = "Active categories in system";
 export const TOTAL_PRODUCTS = "Total Products";
 export const PRODCUTS_ACROSS_ALL = "Products across all categories";
-export const AVERAGE_PER_CATEGORY = "Average per Category";
+export const CATEGORIES = "Categories";
 export const PRODUCT_PER_CATEGORY = "Products per category";
 
 export const PRODUCT_MANAGEMENT_TITLE = "Product Management";
@@ -15,6 +15,13 @@ export const PRODUCT_MANAGEMENT_BUTTON = "Add Product";
 export const CATEGORY_MANAGEMENT_TITLE = "Category Management";
 export const CATEGORY_MANAGEMENT_TAGLINE = "Manage your inventory categories";
 export const CATEGORY_MANAGEMENT_BUTTON = "Add Category";
+
+export const STOCK_MANAGEMENT = {
+  STOCK_MANAGEMENT_TITLE: "Stock Management",
+  STOCK_MANAGEMENT_TAGLINE:
+    "Comprehensive stock tracking with complete audit trail.",
+  STOCK_MANAGEMENT_BUTTON: "Adjust stock",
+};
 export const DEMO_ACCOUNT = "Try Demo Account";
 export const USER_ROLES = {
   ADMIN: "admin",

@@ -4,18 +4,11 @@ import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import { useSelector } from "react-redux";
 import AddButton from "../AddButton";
-import EditAddProductModal from "../EditAddProductModal";
-import useStock from "../../utils/hooks/stock/useStock";
-import useCategory from "../../utils/hooks/category/useCategory";
-import { useCallback } from "react";
-import { PRODUCT_MANAGEMENT_TITLE, USER_ROLES } from "../../utils/constants";
+import { USER_ROLES } from "../../utils/constants";
 
 const CustomHeading = (props) => {
   const { title, tagLine, buttonText, onAdd, setIsModalVisible } = props;
   const userRole = useSelector((store) => store.user.user.role.label);
-
-  const { getStocksfromCustomHook } = useStock();
-  const { getCategoriesFromCustomHook } = useCategory();
 
   const [form] = Form.useForm();
 

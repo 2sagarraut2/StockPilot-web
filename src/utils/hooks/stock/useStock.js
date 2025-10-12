@@ -26,10 +26,13 @@ const useStock = () => {
               total,
             })
           );
+
+          return true;
         }
       }
     } catch (err) {
       console.log(err);
+      return false;
     } finally {
       dispatch(setLoading(false));
     }

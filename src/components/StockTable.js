@@ -63,6 +63,7 @@ const StockTable = ({
   const [productToDelete, setProductToDelete] = useState(null);
 
   const userRole = useSelector((store) => store.user.user.role.label);
+  const products = useSelector((store) => store.stock.items);
   const isAdmin = userRole === "admin";
   const { deleteProductCustomHook } = useProduct();
 
@@ -231,13 +232,24 @@ const StockTable = ({
       const res = await deleteProductCustomHook(productToDelete?.product?._id);
 
       if (res) {
-        const current = 1;
         const limit = 10;
-        await getStocksfromCustomHook(current, limit);
-        setPagination((prev) => ({
-          ...prev,
-          current,
-        }));
+        const isLastItemOnPage = products.length === 1;
+        const totalPages = Math.ceil((total - 1) / limit);
+
+        let nextPage = pagination.current;
+
+        if (isLastItemOnPage && pagination.current > totalPages) {
+          nextPage = pagination.current - 1;
+        }
+
+        const res = await getStocksfromCustomHook(nextPage, limit);
+
+        if (res) {
+          setPagination((prev) => ({
+            ...prev,
+            current: nextPage,
+          }));
+        }
       }
     } catch (err) {
     } finally {

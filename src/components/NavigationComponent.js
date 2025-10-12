@@ -2,10 +2,10 @@ import { Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import {
   DashboardOutlined,
-  ProductOutlined,
-  RetweetOutlined,
-  SwapOutlined,
-  TagsOutlined,
+  DropboxOutlined,
+  ShoppingOutlined,
+  ClusterOutlined,
+  DropboxOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
@@ -34,7 +34,7 @@ const NavigationComponent = ({ isOpen, setIsOpen }) => {
           Products
         </Link>
       ),
-      icon: <ProductOutlined style={{ fontSize: "18px" }} />,
+      icon: <ShoppingOutlined style={{ fontSize: "18px" }} />,
     },
     {
       key: "/categories",
@@ -43,16 +43,16 @@ const NavigationComponent = ({ isOpen, setIsOpen }) => {
           Categories
         </Link>
       ),
-      icon: <TagsOutlined style={{ fontSize: "18px" }} />,
+      icon: <ClusterOutlined style={{ fontSize: "18px" }} />,
     },
     {
       key: "/stockInOut",
       label: (
         <Link to="/stockInOut" onClick={handleMenuClick}>
-          Stock In/Out
+          Stock Management
         </Link>
       ),
-      icon: <RetweetOutlined style={{ fontSize: "18px" }} />,
+      icon: <DropboxOutlined style={{ fontSize: "18px" }} />,
     },
   ];
 
