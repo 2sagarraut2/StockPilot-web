@@ -15,6 +15,11 @@ import DeleteProductModal from "./DeleteProductModal";
 import useProduct from "../utils/hooks/product/useProduct";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { USER_ROLES } from "../utils/constants";
+import ShowHistoryModal from "./ShowHistoryModal";
+import { historyData } from "../api/historyDetails";
+import useHistory from "../utils/hooks/history/useHistory";
+import React from "react";
 const { useBreakpoint } = Grid;
 
 const getStockStatus = (quantity) => {
@@ -64,11 +69,22 @@ const StockTable = ({
 
   const userRole = useSelector((store) => store.user.user.role.label);
   const products = useSelector((store) => store.stock.items);
-  const isAdmin = userRole === "admin";
+  const historyData = useSelector((store) => store.history.items);
+  const isAdmin = userRole === USER_ROLES.ADMIN;
   const { deleteProductCustomHook } = useProduct();
+  const { getHistoryFromCustomHook } = useHistory();
+  const [openHistoryModal, setOpenHistoryModal] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   const screens = useBreakpoint();
   const isWebDevice = screens.xl;
+
+  const handleProductNameClicked = async (id) => {
+    // getHistoryDetails(id);
+    setOpenHistoryModal(true);
+
+    getHistoryFromCustomHook("Product", id);
+  };
 
   const deviceCols = [
     {
@@ -76,6 +92,7 @@ const StockTable = ({
       dataIndex: "product name",
       align: "left",
       render: (value, row, index) => {
+        const id = row?.product?._id;
         const name = row?.product?.name;
         const description = row?.product?.description;
         const sku = row?.product?.sku;
@@ -88,7 +105,13 @@ const StockTable = ({
           <div className="py-4 [@media(min-width:380px)]:px-4">
             <div className="flex justify-between mb-2">
               <section className="text-left">
-                <ProductCardData label="Product Name" name={name} />
+                <div className="text-xs">Product Name</div>
+                <Link
+                  className="font-medium hover:underline"
+                  onClick={() => handleProductNameClicked(id)}
+                >
+                  {name}
+                </Link>
               </section>
               <section className="text-right">
                 <ProductCardData
@@ -144,7 +167,7 @@ const StockTable = ({
       title: "Product Name",
       render: (record) => (
         <div className="p-0 ">
-          <Link className="font-medium hover:underline" to="/">
+          <Link onClick={() => handleProductNameClicked(record.product._id)}>
             {record.product.name}
           </Link>
           <div className="text-gray-500">{record.product.description}</div>
@@ -200,12 +223,16 @@ const StockTable = ({
       render: (record) => getStockStatus(record.quantity),
       width: 120,
     },
-    {
-      title: "Actions",
-      key: "actions",
-      width: 80,
-      render: (record) => getActions(record),
-    },
+    ...(isAdmin
+      ? [
+          {
+            title: "Actions",
+            key: "actions",
+            width: 80,
+            render: (record) => getActions(record),
+          },
+        ]
+      : []),
   ];
 
   const handleRowEditClick = (record) => {
@@ -300,7 +327,7 @@ const StockTable = ({
               total: total,
             }}
             onChange={handleTableChange}
-            scroll={{ y: 480 }}
+            scroll={{ y: 305 }}
           />
 
           <DeleteProductModal
@@ -311,6 +338,14 @@ const StockTable = ({
             title="Delete Product"
             modalText="Are you sure want to delete"
             productName={productToDelete?.product?.name}
+          />
+
+          <ShowHistoryModal
+            title="Product History"
+            isModalVisible={openHistoryModal}
+            setOpenHistoryModal={setOpenHistoryModal}
+            historyData={historyData}
+            loading={historyLoading}
           />
         </div>
       )}

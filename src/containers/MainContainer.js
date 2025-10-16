@@ -6,32 +6,49 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import appStore, { persistor } from "../utils/redux/appStore";
 import Title from "../components/Title";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import Login from "../containers/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
+
+// Lazy-loaded components
 const ProductComponent = lazy(() => import("./Product"));
 const CategoryComponent = lazy(() => import("./Category"));
 const StockInOutComponent = lazy(() => import("./StockInOut"));
-import { LoadingOutlined } from "@ant-design/icons";
 
+// Lightweight fallback for Suspense
+const SuspenseFallback = () => (
+  <div
+    style={{
+      height: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "1.2rem",
+    }}
+  >
+    Loading...
+  </div>
+);
+
+// App Layout
 const AppLayout = () => {
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col md:flex-row min-h-screen">
       <Header />
 
       <div className="flex-1 overflow-y-auto bg-gray-50">
         <Title />
-
         <Outlet />
       </div>
     </div>
   );
 };
 
+// Optimized router
 const appRouter = createBrowserRouter([
   {
     path: "/login",
-    element: <Login />, // login remains public
+    element: <Login />, // public route
   },
   {
     path: "/",
@@ -41,14 +58,11 @@ const appRouter = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      {
-        path: "/",
-        element: <Dashboard />,
-      },
+      { path: "/", element: <Dashboard /> },
       {
         path: "/products",
         element: (
-          <Suspense fallback={<LoadingOutlined />}>
+          <Suspense fallback={<SuspenseFallback />}>
             <ProductComponent />
           </Suspense>
         ),
@@ -56,7 +70,7 @@ const appRouter = createBrowserRouter([
       {
         path: "/categories",
         element: (
-          <Suspense fallback={<LoadingOutlined />}>
+          <Suspense fallback={<SuspenseFallback />}>
             <CategoryComponent />
           </Suspense>
         ),
@@ -64,7 +78,7 @@ const appRouter = createBrowserRouter([
       {
         path: "/stockInOut",
         element: (
-          <Suspense fallback={<LoadingOutlined />}>
+          <Suspense fallback={<SuspenseFallback />}>
             <StockInOutComponent />
           </Suspense>
         ),
@@ -77,7 +91,7 @@ const appRouter = createBrowserRouter([
 const MainContainer = () => {
   return (
     <Provider store={appStore}>
-      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+      <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={appRouter} />
       </PersistGate>
     </Provider>

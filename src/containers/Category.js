@@ -15,6 +15,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import React from "react";
 import DeleteProductModal from "../components/DeleteProductModal";
+import ShowHistoryModal from "../components/ShowHistoryModal";
+import useHistory from "../utils/hooks/history/useHistory";
 
 const Category = () => {
   const { items, loading, total } = useSelector((store) => store.category);
@@ -35,6 +37,11 @@ const Category = () => {
   const [confirmLoadingDeleteModal, setConfirmLoadingDelete] = useState(false);
   const [deletingCategory, setDeletingCategory] = useState(null);
 
+  const historyData = useSelector((store) => store.history.items);
+  const [openHistoryModal, setOpenHistoryModal] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const { getHistoryFromCustomHook } = useHistory();
+
   const [form] = Form.useForm();
 
   const handleOk = async () => {
@@ -42,10 +49,16 @@ const Category = () => {
 
     if (editingCategory) {
       const id = editingCategory?._id;
-      const data = form.getFieldsValue();
+      const allValues = form.getFieldsValue();
+      const updatedFields = {};
+      Object.keys(allValues).forEach((fieldName) => {
+        if (form.isFieldTouched(fieldName)) {
+          updatedFields[fieldName] = allValues[fieldName];
+        }
+      });
 
       // calling edit category hook
-      handleEditCategory(id, data);
+      handleEditCategory(id, updatedFields);
       setEditingCategory(null);
     } else {
       const data = form.getFieldsValue();
@@ -116,8 +129,14 @@ const Category = () => {
   };
 
   const handleCancelDeleteModal = () => {
-    console.log("handleCancelDeleteModal");
     setOpenDeleteModal(false);
+  };
+
+  const handleCategoryNameClicked = async (id) => {
+    // getHistoryDetails(id);
+    setOpenHistoryModal(true);
+
+    getHistoryFromCustomHook("Category", id);
   };
 
   return (
@@ -153,6 +172,7 @@ const Category = () => {
                 setOpenDeleteModal={setOpenDeleteModal}
                 setConfirmLoadingDelete={setConfirmLoadingDelete}
                 setDeletingCategory={setDeletingCategory}
+                handleCategoryNameClicked={handleCategoryNameClicked}
               />
             );
           })}
@@ -185,6 +205,14 @@ const Category = () => {
         title="Delete Category"
         modalText="Are you sure want to delete"
         productName={deletingCategory?.name}
+      />
+
+      <ShowHistoryModal
+        title="Category History"
+        isModalVisible={openHistoryModal}
+        setOpenHistoryModal={setOpenHistoryModal}
+        historyData={historyData}
+        loading={historyLoading}
       />
     </div>
   );

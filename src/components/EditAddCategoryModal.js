@@ -9,11 +9,21 @@ const EditAddCategoryModal = ({
   handleCancel,
   form,
 }) => {
+  const onSubmit = async () => {
+    try {
+      // Validate form fields before submission
+      const values = await form.validateFields();
+      handleOk(values); // send data to parent if valid
+    } catch (error) {
+      console.log("Validation failed:", error);
+    }
+  };
+
   return (
     <Modal
       title={title}
       open={isModalVisible}
-      onOk={handleOk}
+      onOk={onSubmit}
       onCancel={handleCancel}
       okText="Save"
       cancelText="Cancel"
@@ -23,12 +33,27 @@ const EditAddCategoryModal = ({
       }}
     >
       <Form form={form} layout="vertical" variant="filled">
-        <Form.Item name="name" label="Name" required>
+        <Form.Item
+          name="name"
+          label="Name"
+          required
+          rules={[
+            { required: true, message: "Category name is required!" },
+            { min: 3, message: "Name should be at least 3 characters long" },
+          ]}
+        >
           <Input size="large" placeholder="Enter category name" />
         </Form.Item>
-        <Form.Item name="description" label="Description" required>
+        <Form.Item
+          name="description"
+          label="Description"
+          required
+          rules={[{ required: true, message: "Description is required!" }]}
+        >
           <TextArea size="large" placeholder="Enter category description" />
         </Form.Item>
+
+        {/* TODO: Add Note Input */}
       </Form>
     </Modal>
   );

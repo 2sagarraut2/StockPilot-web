@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { USER_ROLES, TOOLTIP_TEXT, COLORS } from "../../utils/constants";
 import React, { useState } from "react";
-import useCategory from "../../utils/hooks/category/useCategory";
-import DeleteProductModal from "../DeleteProductModal";
+import { formatDate } from "../../utils/utils";
 
 const { Title } = Typography;
 
@@ -19,6 +18,7 @@ const CategoryCards = ({
   setModalTitle,
   setOpenDeleteModal,
   setDeletingCategory,
+  handleCategoryNameClicked,
 }) => {
   const userRole = useSelector((store) => store.user.user.role.label);
   const isAdmin = userRole === USER_ROLES.ADMIN;
@@ -61,44 +61,50 @@ const CategoryCards = ({
 
   const actions = [
     <div className="flex justify-center align-middle">
-      <Title
-        style={{
-          fontSize: "small",
-          justifyItems: "baseline",
-          fontWeight: "normal",
-          margin: 0,
-          paddingInline: "8px",
-        }}
-      >
-        Created: 01/01/2024
-      </Title>
-    </div>,
-    <div className="flex flex-wrap gap-8 justify-center px-2">
-      <Tooltip title={isAdmin ? "Edit Category" : "Only admins can edit"}>
-        <EditOutlined
-          aria-label="Edit category"
-          key="edit"
-          className="hover:cursor-pointer border p-2 border-gray-300 rounded-sm hover:bg-gray-200"
-          style={isAdmin ? activeStyle : disabledStyle}
-          onClick={handleEditClick}
-        />
-      </Tooltip>
-      <Tooltip
-        title={
-          isAdmin
-            ? TOOLTIP_TEXT.DELETE_CATEGORY
-            : TOOLTIP_TEXT.ONLY_ADMIN_DELETE
-        }
-      >
-        <DeleteOutlined
-          aria-label="Delete category"
-          key="delete"
-          className="hover:cursor-pointer border p-2 border-gray-300 rounded-sm hover:bg-gray-200"
-          style={isAdmin ? activeStyle : disabledStyle}
-          onClick={handleDeleteClick}
-        />
+      <Tooltip title={"Created: " + formatDate(category.createdAt)}>
+        <Title
+          style={{
+            fontSize: "small",
+            justifyItems: "baseline",
+            fontWeight: "normal",
+            margin: 0,
+            paddingInline: "8px",
+          }}
+        >
+          Created: {new Date(category.createdAt).toLocaleDateString("en-GB")}
+        </Title>
       </Tooltip>
     </div>,
+    ...(isAdmin
+      ? [
+          <div className="flex flex-wrap gap-8 justify-center px-2">
+            <Tooltip title={isAdmin ? "Edit Category" : "Only admins can edit"}>
+              <EditOutlined
+                aria-label="Edit category"
+                key="edit"
+                className="hover:cursor-pointer border p-2 border-gray-300 rounded-sm hover:bg-gray-200"
+                style={isAdmin ? activeStyle : disabledStyle}
+                onClick={handleEditClick}
+              />
+            </Tooltip>
+            <Tooltip
+              title={
+                isAdmin
+                  ? TOOLTIP_TEXT.DELETE_CATEGORY
+                  : TOOLTIP_TEXT.ONLY_ADMIN_DELETE
+              }
+            >
+              <DeleteOutlined
+                aria-label="Delete category"
+                key="delete"
+                className="hover:cursor-pointer border p-2 border-gray-300 rounded-sm hover:bg-gray-200"
+                style={isAdmin ? activeStyle : disabledStyle}
+                onClick={handleDeleteClick}
+              />
+            </Tooltip>
+          </div>,
+        ]
+      : []),
   ];
 
   return (
@@ -136,7 +142,11 @@ const CategoryCards = ({
                     <path d="m7.5 4.27 9 5.15"></path>
                   </svg>
                 }
-                title={<Link to="/">{category.name}</Link>}
+                title={
+                  <Link onClick={() => handleCategoryNameClicked(category._id)}>
+                    {category.name}
+                  </Link>
+                }
                 description={
                   <>
                     <p className="overflow-hidden whitespace-nowrap overflow-ellipsis">

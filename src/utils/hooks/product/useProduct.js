@@ -16,7 +16,7 @@ const useProduct = () => {
     } catch (err) {}
   };
 
-  //   TODO: add products
+  // add products
   const addProductCustomHook = async (data) => {
     dispatch(setLoading(true));
     try {
@@ -43,7 +43,7 @@ const useProduct = () => {
     }
   };
 
-  //   TODO: update products
+  // update products
   const updateProductCustomHook = async (productId, data) => {
     dispatch(setLoading(true));
     try {
@@ -70,7 +70,7 @@ const useProduct = () => {
     }
   };
 
-  // TODO:  delete products
+  // delete products
   const deleteProductCustomHook = async (productId) => {
     dispatch(setLoading(true));
     try {

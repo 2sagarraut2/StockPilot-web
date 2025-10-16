@@ -5,12 +5,19 @@ import { useState } from "react";
 const { Title, Paragraph } = Typography;
 
 const IntroModal = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(() => {
+    return localStorage.getItem("introShown") !== "true";
+  });
+
+  const handleOk = () => {
+    localStorage.setItem("introShown", "true");
+    setIsModalOpen(false);
+  };
 
   return (
     <Modal
       open={isModalOpen}
-      onCancel={() => setIsModalOpen(false)}
+      onCancel={() => (onCancel = { handleOk })}
       footer={[
         <Button
           color="default"
@@ -27,7 +34,7 @@ const IntroModal = () => {
       centered
       closeIcon={false}
     >
-      <div className="flex flex-col items-center text-center space-y-4">
+      <div className="flex flex-col items-center text-center space-y-4 transition-all duration-500 ease-out transform animate-[fadeInUp_0.4s_ease-out]">
         <CheckCircleTwoTone
           twoToneColor="#52c41a"
           style={{ fontSize: "60px" }}

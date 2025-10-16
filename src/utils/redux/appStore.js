@@ -6,7 +6,7 @@ import stockReducer from "./stockSlice";
 import categoryReducer from "./categorySlice";
 import userReducer from "./userSlice";
 import productReducer from "./productSlice";
-import { useReducer } from "react";
+import historyReducer from "./historySlice";
 
 // 🔹 1. Create a persist config only for `user`
 const userPersistConfig = {
@@ -21,6 +21,7 @@ const rootReducer = combineReducers({
   category: categoryReducer,
   user: persistReducer(userPersistConfig, userReducer),
   product: productReducer,
+  history: historyReducer,
 });
 
 // 🔹 3. Configure store with combined reducers

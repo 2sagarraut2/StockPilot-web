@@ -95,8 +95,9 @@ Inspired by real-world stock & inventory management challenges.
   - Add filters - Date, Product, Price on product and stock page
   - product hisotry page
   - stock history page
-  - Add validations for add/Edit pages
   - add category load button style
+  - newly added category is not fetched if I dont visit category page
+  - fix header height issue
 
 1. iphone - 10
 2. Sell - 10

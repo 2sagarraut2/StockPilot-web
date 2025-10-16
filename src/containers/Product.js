@@ -12,7 +12,7 @@ import {
 } from "../utils/constants";
 import EditAddProductModal from "../components/EditAddProductModal";
 import { Form } from "antd";
-import { current } from "@reduxjs/toolkit";
+import AllCategories from "../components/AllCategories";
 
 const Product = () => {
   const { displayedStocks, total, loading } = useSelector(
@@ -31,6 +31,7 @@ const Product = () => {
   const { getStocksfromCustomHook } = useStock();
 
   const { addProductCustomHook, updateProductCustomHook } = useProduct();
+  const products = useSelector((store) => store.stock.items);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState("Edit Category");
@@ -41,20 +42,21 @@ const Product = () => {
       if (editingProduct) {
         // Editing product
         const id = editingProduct.product._id;
-        const data = form.getFieldsValue();
+        const allValues = form.getFieldsValue();
+        const updatedFields = {};
+        Object.keys(allValues).forEach((fieldName) => {
+          if (form.isFieldTouched(fieldName)) {
+            updatedFields[fieldName] = allValues[fieldName];
+          }
+        });
 
         // calling update products hook
-        const res = await updateProductCustomHook(id, data);
+        const res = await updateProductCustomHook(id, updatedFields);
 
         // checking before calling this
         if (res) {
           const page = pagination.current;
           const limit = pagination.pageSize;
-          // setPagination({
-          //   current: 1,
-          //   pageSize: 10,
-          // });
-          console.log("editingProduct");
           getStocksfromCustomHook(page, limit);
         }
       } else {
@@ -66,12 +68,13 @@ const Product = () => {
 
         // checking before calling this
         if (res) {
-          const page = pagination.current + 1;
+          let page = pagination.current;
+
+          if (products.length === 10) {
+            page = page + 1;
+          }
+
           const limit = pagination.pageSize;
-          // setPagination({
-          //   current: 1,
-          //   pageSize: 10,
-          // });
           getStocksfromCustomHook(page, limit);
           setPagination((prev) => ({ ...prev, current: page }));
         }
@@ -106,11 +109,16 @@ const Product = () => {
         setPagination={setPagination}
       />
       <section>
-        <ProductSearch
-          searchText={searchText}
-          setSearchText={setSearchText}
-          setPagination={setPagination}
-        />
+        <div className="flex p-6 border border-gray-300 mb-3 rounded-lg justify-between gap-4 bg-white flex-wrap">
+          <div className="md:flex-1">
+            <ProductSearch
+              searchText={searchText}
+              setSearchText={setSearchText}
+              setPagination={setPagination}
+            />
+          </div>
+          <AllCategories />
+        </div>
       </section>
       <div className="border border-gray-300 rounded-lg pt-6 px-8 bg-white">
         <StockTable
