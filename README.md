@@ -91,13 +91,12 @@ Inspired by real-world stock & inventory management challenges.
   - Implement sorting for products on basis of category
   - Fix allcategories drown on Edit Product page to remove All Option / Add All Option on Product page dropdown
   - StockInOut should show original quantity and price and total price, remaining quantity and price
-  - Product table should show history of stock
   - Add filters - Date, Product, Price on product and stock page
-  - product hisotry page
-  - stock history page
+  - product hisotry page filter
+  - stock history page filter
   - add category load button style
-  - newly added category is not fetched if I dont visit category page
-  - fix header height issue
+  - newly added category is not fetched if dont visit category page
+  - only first 10 categories loading on product page
 
 1. iphone - 10
 2. Sell - 10

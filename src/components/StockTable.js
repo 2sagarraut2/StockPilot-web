@@ -6,7 +6,7 @@ import {
   EditOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useStock from "../utils/hooks/stock/useStock";
 import { Grid } from "antd";
@@ -72,18 +72,23 @@ const StockTable = ({
   const historyData = useSelector((store) => store.history.items);
   const isAdmin = userRole === USER_ROLES.ADMIN;
   const { deleteProductCustomHook } = useProduct();
+
   const { getHistoryFromCustomHook } = useHistory();
   const [openHistoryModal, setOpenHistoryModal] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedAction, setSelectedAction] = useState(null);
+  const [clickedProduct, setClickedProduct] = useState(null);
 
   const screens = useBreakpoint();
   const isWebDevice = screens.xl;
 
-  const handleProductNameClicked = async (id) => {
+  const handleProductNameClicked = async (id, name) => {
     // getHistoryDetails(id);
     setOpenHistoryModal(true);
+    setClickedProduct(name);
 
-    getHistoryFromCustomHook("Product", id);
+    const res = await getHistoryFromCustomHook("Product", id);
   };
 
   const deviceCols = [
@@ -107,7 +112,7 @@ const StockTable = ({
               <section className="text-left">
                 <div className="text-xs">Product Name</div>
                 <Link
-                  className="font-medium hover:underline"
+                  className="font-semibold hover:underline"
                   onClick={() => handleProductNameClicked(id)}
                 >
                   {name}
@@ -167,7 +172,12 @@ const StockTable = ({
       title: "Product Name",
       render: (record) => (
         <div className="p-0 ">
-          <Link onClick={() => handleProductNameClicked(record.product._id)}>
+          <Link
+            className="font-semibold"
+            onClick={() =>
+              handleProductNameClicked(record.product._id, record.product.name)
+            }
+          >
             {record.product.name}
           </Link>
           <div className="text-gray-500">{record.product.description}</div>
@@ -310,6 +320,29 @@ const StockTable = ({
     );
   });
 
+  const filteredData = useMemo(() => {
+    if (!Array.isArray(historyData) || historyData.length === 0) {
+      return [];
+    }
+
+    return historyData.filter((item) => {
+      // check user filter
+      const matchUser = selectedUser
+        ? `${item.modifiedBy?.firstName} ${item.modifiedBy?.lastName}` ===
+          selectedUser
+        : true;
+
+      // check action filter
+      const matchAction = selectedAction
+        ? item.action === selectedAction
+        : true;
+
+      return matchUser && matchAction;
+    });
+  }, [historyData, selectedUser, selectedAction]);
+
+  console.log(filteredData);
+
   return (
     <>
       {stock && (
@@ -327,7 +360,7 @@ const StockTable = ({
               total: total,
             }}
             onChange={handleTableChange}
-            scroll={{ y: 305 }}
+            scroll={{ y: 304 }}
           />
 
           <DeleteProductModal
@@ -341,11 +374,17 @@ const StockTable = ({
           />
 
           <ShowHistoryModal
-            title="Product History"
+            title={"Product History: " + clickedProduct}
             isModalVisible={openHistoryModal}
             setOpenHistoryModal={setOpenHistoryModal}
-            historyData={historyData}
+            // historyData={historyData}
             loading={historyLoading}
+            originalData={historyData}
+            historyData={filteredData}
+            onUserChange={setSelectedUser}
+            onActionChange={setSelectedAction}
+            selectedUser={selectedUser}
+            selectedAction={selectedAction}
           />
         </div>
       )}

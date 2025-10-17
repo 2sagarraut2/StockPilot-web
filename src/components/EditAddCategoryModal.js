@@ -21,7 +21,7 @@ const EditAddCategoryModal = ({
 
   return (
     <Modal
-      title={title}
+      title={<span style={{ fontSize: "20px", fontWeight: 600 }}>{title}</span>}
       open={isModalVisible}
       onOk={onSubmit}
       onCancel={handleCancel}

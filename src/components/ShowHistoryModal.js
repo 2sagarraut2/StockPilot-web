@@ -22,24 +22,29 @@ const ShowHistoryModal = ({
   setSearchText,
   handlSearchClear,
   value,
-  onChange,
-  setClickedProduct,
+  originalData,
   historyData,
   loading,
+  onUserChange,
+  onActionChange,
+  selectedUser,
+  selectedAction,
 }) => {
+  console.log(historyData);
+
   const actionOptions =
-    historyData && historyData.length
-      ? [...new Set(historyData.map((item) => item.action))].map((action) => ({
+    originalData && originalData.length
+      ? [...new Set(originalData.map((item) => item.action))].map((action) => ({
           label: action,
           value: action,
         }))
       : [];
 
   const userOptions =
-    historyData && historyData.length
+    originalData && originalData.length
       ? [
           ...new Set(
-            historyData
+            originalData
               .filter((item) => item.modifiedBy)
               .map((item) =>
                 `${item.modifiedBy.firstName} ${item.modifiedBy.lastName}`.trim()
@@ -53,7 +58,7 @@ const ShowHistoryModal = ({
 
   return (
     <Modal
-      title={title}
+      title={<span style={{ fontSize: "20px", fontWeight: 600 }}>{title}</span>}
       open={isModalVisible}
       onCancel={() => {
         setOpenHistoryModal(false);
@@ -61,9 +66,6 @@ const ShowHistoryModal = ({
       footer={null}
       width={600}
       styles={{
-        content: {
-          margin: "0 auto", // decrease top/bottom space (default ~100px)
-        },
         body: {
           paddingRight: "10px",
           maxHeight: "70vh",
@@ -94,8 +96,8 @@ const ShowHistoryModal = ({
 
               <div className="mb-3 flex gap-2">
                 <Select
-                  value={value}
-                  onChange={onChange}
+                  value={selectedAction}
+                  onChange={(value) => onActionChange?.(value)}
                   style={{ width: 200 }}
                   variant="filled"
                   options={actionOptions}
@@ -106,8 +108,8 @@ const ShowHistoryModal = ({
                   disabled={historyData && !historyData.length}
                 />
                 <Select
-                  value={value}
-                  onChange={onChange}
+                  value={selectedUser}
+                  onChange={(value) => onUserChange?.(value)}
                   style={{ width: 200 }}
                   variant="filled"
                   options={userOptions}
@@ -153,16 +155,19 @@ const ShowHistoryModal = ({
                               {item.action && <ActionCard data={item.action} />}
                             </section>
 
-                            <section className="my-2">
-                              <h2 className="mb-2 font-semibold">Changes:</h2>
-                              {item.action === "UPDATE" &&
-                                item.changes?.map((change, index) => (
-                                  <ChangeCard
-                                    key={change._id || index}
-                                    entity={change}
-                                  />
-                                ))}
-                            </section>
+                            {item.action === "UPDATE" && (
+                              <section className="my-2">
+                                <h2 className="mb-2 font-semibold">Changes:</h2>
+                                {item.changes?.map((change, index) => {
+                                  return (
+                                    <ChangeCard
+                                      key={change._id || index}
+                                      entity={change}
+                                    />
+                                  );
+                                })}
+                              </section>
+                            )}
                           </div>
                         ),
                       }))

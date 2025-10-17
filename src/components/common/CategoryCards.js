@@ -143,7 +143,11 @@ const CategoryCards = ({
                   </svg>
                 }
                 title={
-                  <Link onClick={() => handleCategoryNameClicked(category._id)}>
+                  <Link
+                    onClick={() =>
+                      handleCategoryNameClicked(category._id, category.name)
+                    }
+                  >
                     {category.name}
                   </Link>
                 }

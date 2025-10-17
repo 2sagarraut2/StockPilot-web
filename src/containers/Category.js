@@ -1,6 +1,6 @@
 import { Button, Form, Row } from "antd";
 import CategoryCards from "../components/common/CategoryCards";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CustomHeading from "../components/common/CustomHeading";
 import {
   CATEGORY_MANAGEMENT_BUTTON,
@@ -11,9 +11,6 @@ import {
 import { useState } from "react";
 import useCategory from "../utils/hooks/category/useCategory";
 import EditAddCategoryModal from "../components/EditAddCategoryModal";
-import PropTypes from "prop-types";
-import React from "react";
-import React from "react";
 import DeleteProductModal from "../components/DeleteProductModal";
 import ShowHistoryModal from "../components/ShowHistoryModal";
 import useHistory from "../utils/hooks/history/useHistory";
@@ -41,6 +38,7 @@ const Category = () => {
   const [openHistoryModal, setOpenHistoryModal] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
   const { getHistoryFromCustomHook } = useHistory();
+  const [clickedCategory, setClickedCategory] = useState(null);
 
   const [form] = Form.useForm();
 
@@ -132,9 +130,10 @@ const Category = () => {
     setOpenDeleteModal(false);
   };
 
-  const handleCategoryNameClicked = async (id) => {
+  const handleCategoryNameClicked = async (id, name) => {
     // getHistoryDetails(id);
     setOpenHistoryModal(true);
+    setClickedCategory(name);
 
     getHistoryFromCustomHook("Category", id);
   };
@@ -154,41 +153,44 @@ const Category = () => {
           setModalTitle("Add Category");
         }}
       />
-      <Row gutter={[16, 16]} style={{ marginBottom: "2%" }}>
-        {items &&
-          items.map((category) => {
-            return (
-              <CategoryCards
-                form={form}
-                category={category}
-                loading={loading}
-                key={category._id}
-                isModalVisible={isModalVisible}
-                setIsModalVisible={setIsModalVisible}
-                setEditingCategory={setEditingCategory}
-                setModalTitle={setModalTitle}
-                handleDeleteOk={handleDeleteOk}
-                handleCancelDeleteModal={handleCancelDeleteModal}
-                setOpenDeleteModal={setOpenDeleteModal}
-                setConfirmLoadingDelete={setConfirmLoadingDelete}
-                setDeletingCategory={setDeletingCategory}
-                handleCategoryNameClicked={handleCategoryNameClicked}
-              />
-            );
-          })}
-      </Row>
-      <div className="text-center">
-        {items.length < total && (
-          <Button
-            color="default"
-            variant="solid"
-            onClick={handleLoadMore}
-            disabled={loading}
-          >
-            {loading ? "Loading..." : "Load More"}
-          </Button>
-        )}
-      </div>
+      <section className="overflow-y-auto max-h-[70vh] pr-2">
+        <Row gutter={[16, 16]} style={{ marginBottom: "2%" }}>
+          {items &&
+            items.map((category) => {
+              return (
+                <CategoryCards
+                  form={form}
+                  category={category}
+                  loading={loading}
+                  key={category._id}
+                  isModalVisible={isModalVisible}
+                  setIsModalVisible={setIsModalVisible}
+                  setEditingCategory={setEditingCategory}
+                  setModalTitle={setModalTitle}
+                  handleDeleteOk={handleDeleteOk}
+                  handleCancelDeleteModal={handleCancelDeleteModal}
+                  setOpenDeleteModal={setOpenDeleteModal}
+                  setConfirmLoadingDelete={setConfirmLoadingDelete}
+                  setDeletingCategory={setDeletingCategory}
+                  handleCategoryNameClicked={handleCategoryNameClicked}
+                />
+              );
+            })}
+        </Row>
+
+        <div className="text-center">
+          {items.length < total && (
+            <Button
+              color="default"
+              variant="solid"
+              onClick={handleLoadMore}
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Load More"}
+            </Button>
+          )}
+        </div>
+      </section>
       <EditAddCategoryModal
         title={modalTitle}
         isModalVisible={isModalVisible}
@@ -208,7 +210,7 @@ const Category = () => {
       />
 
       <ShowHistoryModal
-        title="Category History"
+        title={"Category History: " + clickedCategory}
         isModalVisible={openHistoryModal}
         setOpenHistoryModal={setOpenHistoryModal}
         historyData={historyData}
